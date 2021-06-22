@@ -16,6 +16,13 @@ public class Player : MonoBehaviour
 	public void Awake()
 	{
 		interactionsInProgress = new List<Interactable>();
+		inv = GetComponent<Inventory>();
+		pv = GetComponent<PhotonView>();
+	}
+
+	public void Start()
+	{
+		GameManager.instance.DeclarePlayer(this);
 	}
 
 	public void Update()
@@ -105,5 +112,28 @@ public class Player : MonoBehaviour
 
 	#endregion
 
+
+
+	///==========================================================================================================
+	///		INVENTORY
+	///==========================================================================================================
+
+	#region Inventory variables
+
+	public Inventory inv;
+
+	#endregion
+
+
+
+	///==========================================================================================================
+	///		MULTIPLAYER
+	///==========================================================================================================
+
+	#region Multiplayer variables
+
+	public PhotonView pv;
+
+	#endregion
 
 }

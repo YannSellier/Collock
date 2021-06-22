@@ -2,33 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory
+[System.Serializable]
+public class Inventory : MonoBehaviour
 {
 
+	///==========================================================================================================
+	///		UNITY BUIL-IN
+	///==========================================================================================================
 
-///===========================================================================================================================================================
-///		INVENTORY VARIABLES
-///===========================================================================================================================================================
+	#region Unity Buil-in functions
 
-		
-#region Items variables
+	void Awake()
+	{
+		items = new List<Item>();
+	}
+	private void Start()
+	{
+	}
+	void Update()
+	{
+
+	}
+
+	#endregion
+
+
+
+
+	///==========================================================================================================
+	///		INVENTORY MANAGEMENT
+	///==========================================================================================================
+
+
+	#region Inventory variables
 
 	// Items list functions
 	private List<Item> items;
-	public Item GetItemAt(int index) { return index < items.Count && index > 0 ? items[index] : null; }
+	public int ItemCount() { return items.Count; }
+	public Item GetItemAt(int index) { return index < items.Count && index >= 0 ? items[index] : null; }
 	public int GetItemIndex(Item item) { return items.IndexOf(item); }
 
-#endregion
+	private InventoryDisplayer displayer;
 
-
-
-
-
-
-
-///===========================================================================================================================================================
-///		INVENTORY FUNCTIONS
-///===========================================================================================================================================================
+	#endregion
 
 
 	#region Initializing
@@ -37,20 +53,38 @@ public class Inventory
 	{
 		this.items = items != null ? items : new List<Item>();
 	}
+	public void InitDisplayer(InventoryDisplayer id)
+	{
+		displayer = id;
+	}
 
 	#endregion
 
 	#region Item List interactions
 
-	public int AddItem(Item item)
+	public int AddItem(Item item, bool updateDisplay = true)
 	{
 		items.Add(item);
+
+		if (updateDisplay && displayer)
+			displayer.UpdateDisplay();
+
 		return items.Count - 1;
 	}
-	public bool RemoveItem(Item item)
+	public bool RemoveItem(Item item, bool updateDisplay = true)
 	{
-		return items.Remove(item);
+		bool bSuccess = items.Remove(item);
+
+		if (updateDisplay && displayer)
+			displayer.UpdateDisplay();
+
+		return bSuccess;
 	}
 
 	#endregion
+
+
+
+
+	
 }

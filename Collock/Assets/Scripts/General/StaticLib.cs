@@ -25,9 +25,13 @@ public static class StaticLib
 		return null;
 	}
 
-	public static (Collider2D,Interactable) SearchForInteractable()
+	public static (Collider2D, Interactable) SearchForInteractable()
 	{
-		Collider2D coll = GetAimedCollider2D();
+		return SearchForInteractable(GetMouseWorldPos2D());
+	}
+	public static (Collider2D,Interactable) SearchForInteractable(Vector2 mousePos)
+	{
+		Collider2D coll = GetAimedCollider2D(mousePos);
 		if (!coll || coll.GetComponentInParent<Interactable>() == null) return (null,null);
 
 		return (coll, coll.GetComponentInParent<Interactable>());
