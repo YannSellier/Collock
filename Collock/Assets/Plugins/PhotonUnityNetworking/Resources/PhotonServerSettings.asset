@@ -50,6 +50,8 @@ MonoBehaviour:
   - DisplayFile
   - OpenFile
   - SERVER_EndInteraction
+  - ChangeTimer
+  - TimerEnd
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

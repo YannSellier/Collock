@@ -2,6 +2,7 @@ using System.Collections;
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -176,6 +177,18 @@ public class Player : MonoBehaviour
 	#region Multiplayer variables
 
 	public PhotonView pv;
+
+	#endregion
+
+
+
+
+	///==========================================================================================================
+	///		TIMER
+	///==========================================================================================================
+
+	#region Timer variables
+
 
 	#endregion
 

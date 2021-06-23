@@ -34,11 +34,6 @@ public class LinkCode : LinkingObj
 		}
 	}
 
-	[PunRPC]
-	public void TryLink()
-	{
-
-	}
 
 	public override void EndInteraction(Vector2 mousePos)
 	{
