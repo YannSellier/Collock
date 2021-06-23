@@ -40,10 +40,14 @@ public class LinkCode : LinkingObj
 
 	}
 
-	[PunRPC]
 	public override void EndInteraction(Vector2 mousePos)
 	{
-		base.EndInteraction(mousePos);
+		pv.RPC("SERVER_EndInteraction", RpcTarget.MasterClient, mousePos);
+	}
+	[PunRPC]
+	public override void SERVER_EndInteraction(Vector2 mousePos)
+	{
+		base.SERVER_EndInteraction(mousePos);
 
 		foreach(var lp in linkingPoints)
 		{

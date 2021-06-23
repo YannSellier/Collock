@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickable : Interactable
+public abstract class Pickable : Interactable
 {
 
 
@@ -35,8 +35,12 @@ public class Pickable : Interactable
 
 	#region Interactable override
 
-	[PunRPC]
 	public override void EndInteraction(Vector2 mousePos)
+	{
+		pv.RPC("SERVER_EndInteraction", RpcTarget.MasterClient, mousePos);
+	}
+	[PunRPC]
+	public void SERVER_EndInteraction(Vector2 mousePos)
 	{
 		(Collider2D coll, Interactable interactable) = StaticLib.SearchForInteractable(mousePos);
 		if (interactable != this) return;
@@ -54,25 +58,17 @@ public class Pickable : Interactable
 
 	#region PickUp variables
 
-	public Item item;
 
 	#endregion
 
 	#region Pickup functions
 
+	public abstract Item GetItem();
+
 	[PunRPC]
 	public void GetPickedUp()
 	{
-		//Debug.Log(Camera.current);
-		//Debug.Log(Camera.current.GetComponent<Inventory>());
-		//Debug.Log(item.itemName);
-		//Camera.current.GetComponent<Inventory>().AddItem(item);
-		print(GameManager.instance);
-		print(GameManager.instance.localPlayer);
-		print(GameManager.instance.localPlayer.inv);
-		print(item);
-
-		GameManager.instance.localPlayer.inv.AddItem(item);
+		GameManager.instance.localPlayer.inv.AddItem(GetItem());
 		Destroy(gameObject);
 	}
 

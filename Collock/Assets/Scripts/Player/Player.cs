@@ -37,18 +37,25 @@ public class Player : MonoBehaviour
 
 	private void UpdateInputs()
 	{
-		if (Input.GetMouseButtonDown(0))
-			StartInteracting();
 
-		if (Input.GetMouseButton(0))
-			UpdateAllInteractions();
+		if (CanInteract())
+		{
+			if (Input.GetMouseButtonDown(0))
+				StartInteracting();
 
-		if (Input.GetMouseButtonUp(0))
-			EndAllInteraction();
+			if (Input.GetMouseButton(0))
+				UpdateAllInteractions();
+
+			if (Input.GetMouseButtonUp(0))
+				EndAllInteraction();
+		}
 	}
 
 
 	#endregion
+
+
+
 
 	///==========================================================================================================
 	///		INTERACTIONS
@@ -92,7 +99,7 @@ public class Player : MonoBehaviour
 	// End the interactions
 	public void EndInteraction(Interactable interactable)
 	{
-		interactable.pv.RPC("EndInteraction", RpcTarget.MasterClient, StaticLib.GetMouseWorldPos2D());
+		interactable.EndInteraction(StaticLib.GetMouseWorldPos2D());
 	}
 	public void EndAllInteraction()
 	{
@@ -110,7 +117,14 @@ public class Player : MonoBehaviour
 	}
 
 
+	private bool CanInteract()
+	{
+		return true;
+	}
+
+
 	#endregion
+
 
 
 
@@ -123,6 +137,35 @@ public class Player : MonoBehaviour
 	public Inventory inv;
 
 	#endregion
+
+
+
+	///==========================================================================================================
+	///		FILE DISPLAYING
+	///==========================================================================================================
+
+	#region Interface variables
+
+	public FileDisplayer fileDisplayer;
+
+	#endregion
+
+	#region Interface functions
+
+	public void DisplayFile(FileInfos file)
+	{
+		if (!CanDisplayFile()) return;
+
+		fileDisplayer.Setup(file);
+		fileDisplayer.DisplayItem(true);
+	}
+	public bool CanDisplayFile()
+	{
+		return true;
+	}
+
+	#endregion
+
 
 
 

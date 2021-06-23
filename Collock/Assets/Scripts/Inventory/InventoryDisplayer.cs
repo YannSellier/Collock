@@ -86,4 +86,13 @@ public class InventoryDisplayer : MonoBehaviour
 	}
 
 	#endregion
+
+	#region Item use functions
+
+	public void UseItem()
+	{
+		inv.UseItem(selectedItemIndex);
+	}
+
+	#endregion
 }

@@ -81,8 +81,12 @@ public class LinkingObj : Interactable
 		//UpdateLink(StaticLib.GetMouseWorldPos2D());
 	}
 
-	[PunRPC]
 	public override void EndInteraction(Vector2 mousePos)
+	{
+		pv.RPC("SERVER_EndInteraction", RpcTarget.MasterClient, mousePos);
+	}
+	[PunRPC]
+	public virtual void SERVER_EndInteraction(Vector2 mousePos)
 	{
 		if (bIsInProgress)
 			EndLink(mousePos, true);

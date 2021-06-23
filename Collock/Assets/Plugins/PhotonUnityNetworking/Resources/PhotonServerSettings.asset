@@ -47,6 +47,9 @@ MonoBehaviour:
   - StartInteraction
   - EndInteraction
   - GetPickedUp
+  - DisplayFile
+  - OpenFile
+  - SERVER_EndInteraction
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

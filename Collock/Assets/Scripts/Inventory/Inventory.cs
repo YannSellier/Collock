@@ -83,8 +83,17 @@ public class Inventory : MonoBehaviour
 
 	#endregion
 
+	#region Item use functions
+
+	public void UseItem(int indexItem)
+	{
+		items[indexItem].Use();
+	}
+
+	#endregion
 
 
 
-	
+
+
 }
