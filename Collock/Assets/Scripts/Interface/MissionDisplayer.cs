@@ -7,6 +7,7 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 {
 	public WaitingPlayers waitingSystem;
 	[HideInInspector]public PhotonView pv;
+	public bool BWaitForOthers = false;
 
 
 	public void Awake()
@@ -18,13 +19,22 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 	{
 		print("Start mission");
 
-		if (!waitingSystem.bWaitingRoomOpen)
+		if (BWaitForOthers)
 		{
-			pv.RPC("SetupWaitingRoom", RpcTarget.All);
-			waitingSystem.StartWaitingRoom();
-		}
 
-		waitingSystem.EnterWaitingRoom(true);
+			if (!waitingSystem.bWaitingRoomOpen)
+			{
+				pv.RPC("SetupWaitingRoom", RpcTarget.All);
+				waitingSystem.StartWaitingRoom();
+			}
+
+			waitingSystem.EnterWaitingRoom(true);
+
+		}
+		else
+		{
+			CloseDisplay();
+		}
 	}
 	[PunRPC]
 	public void SetupWaitingRoom()

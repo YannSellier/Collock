@@ -79,7 +79,7 @@ public class TimerManager : MonoBehaviour
 	}
 	public void UpdateTimer(float deltaTime)
 	{
-		if (!bShouldTime) return;
+		if (!bShouldTime || !PhotonNetwork.IsMasterClient) return;
 
 
 		currentDeltaChange += deltaTime;

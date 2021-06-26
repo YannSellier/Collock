@@ -2,3 +2,5 @@ Base path: 'S:/Programmes/Unity/Unity 2020.3.11f1/Editor/Data', plugins path 'S:
 Cmd: initializeCompiler
 
 Cmd: shutdown
+
+Quitting shader compiler process
