@@ -75,7 +75,6 @@ public class TimerManager : MonoBehaviour
 	public void ChangeTimer(float change)
 	{
 		currentTime += change;
-		print(currentTime);
 		UpdateTimerDisplay();
 	}
 	public void UpdateTimer(float deltaTime)

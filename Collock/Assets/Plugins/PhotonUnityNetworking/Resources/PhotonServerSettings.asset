@@ -52,6 +52,23 @@ MonoBehaviour:
   - SERVER_EndInteraction
   - ChangeTimer
   - TimerEnd
+  - CancelWaitingRoom
+  - EndWaitingRoom
+  - StartVote
+  - Setup
+  - CloseDisplay
+  - SetupWaitingRoom
+  - AddWaitingPlayer
+  - OpenWindow
+  - ChangeScore
+  - CancelLinking
+  - ChangeIsVotingState
+  - ShowValidationBtns
+  - ChangeCanClose
+  - FailLinking
+  - SuccessLinking
+  - SetFirstPlayer
+  - EnableLink
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

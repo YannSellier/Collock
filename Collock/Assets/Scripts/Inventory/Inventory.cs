@@ -67,7 +67,7 @@ public class Inventory : MonoBehaviour
 		items.Add(item);
 
 		if (updateDisplay && displayer)
-			displayer.UpdateDisplay();
+			displayer.UpdateDisplay();	
 
 		return items.Count - 1;
 	}

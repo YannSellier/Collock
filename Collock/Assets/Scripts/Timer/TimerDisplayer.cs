@@ -9,7 +9,8 @@ public class TimerDisplayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		TimerManager.instance.DeclareDisplayer(this);
+		if(TimerManager.instance)
+			TimerManager.instance.DeclareDisplayer(this);
     }
 
 

@@ -16,9 +16,9 @@ public struct LinkStruct
 	}
 }
 
-public class LinkingObj : Interactable
+public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 {
-
+	public static LinkingObj instance;
 
 	///==========================================================================================================
 	///		UNITY BUILT-IN
@@ -28,10 +28,17 @@ public class LinkingObj : Interactable
 
 	public override void Awake()
 	{
+		if (!instance) instance = this;
+		else Destroy(gameObject);
+
 		base.Awake();
 		InitLinkPointsLists();
 
 
+	}
+	public void Start()
+	{
+		waitingRoom.Setup(this);
 	}
 
 	public void Update()
@@ -65,11 +72,14 @@ public class LinkingObj : Interactable
 	{
 		Collider2D coll = StaticLib.GetAimedCollider2D(mousePos);
 		int indexPoint = linkingPointsColls.IndexOf(coll);
+		print("Start interaction " + coll);
 		if (bIsInProgress || !CanStartLinkOn(indexPoint)) return;
 
 		pv.RPC("ChangeInProgressState", RpcTarget.All, true);
 		StartLinkOn(indexPoint);
 
+		//pv.RPC("ShowValidationBtns", RpcTarget.All,false);
+		ShowValidationBtns(false);
 	}	
 
 
@@ -89,10 +99,14 @@ public class LinkingObj : Interactable
 	public virtual void SERVER_EndInteraction(Vector2 mousePos)
 	{
 		if (bIsInProgress)
+		{
 			EndLink(mousePos, true);
-			//pv.RPC("EndLink",RpcTarget.MasterClient,StaticLib.GetMouseWorldPos2D(), true);
 
-		pv.RPC("ChangeInProgressState", RpcTarget.All, false);
+			//pv.RPC("ShowValidationBtns", RpcTarget.All, true);
+			ShowValidationBtns(true);
+			pv.RPC("ChangeInProgressState", RpcTarget.All, false);
+			openWindowObj.pv.RPC("ChangeCanClose", RpcTarget.All, false);
+		}
 	}
 
 
@@ -108,8 +122,8 @@ public class LinkingObj : Interactable
 	#region Linking variables
 
 
-	protected List<Collider2D> linkingPointsColls;
-	protected List<LinkingPoint> linkingPoints;
+	public List<Collider2D> linkingPointsColls;
+	public List<LinkingPoint> linkingPoints;
 
 	protected LinkingPoint linkStart;
 	protected Link currentLink;
@@ -124,6 +138,7 @@ public class LinkingObj : Interactable
 	public bool bLinkChainAuthorized = false;
 
 
+
 	#endregion
 
 
@@ -132,6 +147,8 @@ public class LinkingObj : Interactable
 
 	private void InitLinkPointsLists()
 	{
+		if (linkingPoints.Count > 0 && linkingPointsColls.Count > 0) return;
+
 		linkingPointsColls = new List<Collider2D>();
 		for(int i = 0; i < transform.childCount; i++)
 		{
@@ -155,16 +172,23 @@ public class LinkingObj : Interactable
 
 	#region Linking functions
 
+	
+	public void EnableAllLinks(bool bEnable)
+	{
+		foreach (var point in linkingPoints)
+			point.EnableLink(bEnable);
+	}
+
 
 	// Starting a link
-	[PunRPC]
-	protected void StartLinkOn(int indexPoint)
+	[PunRPC] protected void StartLinkOn(int indexPoint)
 	{
 		if (indexPoint == -1) return;
 
 		LinkingPoint lp = linkingPoints[indexPoint];
 		lp.RemoveLink();
-		if (!bLinkChainAuthorized && lp.GetPrevious()) lp.GetPrevious().RemoveLink();
+		if (!bLinkChainAuthorized && lp.GetPrevious())
+			lp.GetPrevious().RemoveLink();
 
 		linkStart = lp;
 
@@ -176,22 +200,26 @@ public class LinkingObj : Interactable
 
 	}
 	private void InstantiateLink()
-	{ 
-		if(PhotonNetwork.IsConnected)
+	{
+		if (PhotonNetwork.IsConnected)
+		{
+			print("Spawn Link On Photon");
 			currentLink = PhotonNetwork.Instantiate(linkPrefabPath, new Vector3(0, 0, 0), Quaternion.identity, 0).GetComponent<Link>();
+			//currentLink.pv.RPC("EnableLink",RpcTarget.All);
+		}
 		else
 		{
+			print("Spawn link with new gm");
 			GameObject gm = new GameObject();
 			gm.AddComponent<LineRenderer>();
 			gm.AddComponent<PhotonView>();
-			currentLink = gm.AddComponent<Link>();			
+			currentLink = gm.AddComponent<Link>();
 		}
 	}
 
 
 	// Updating the link
-	[PunRPC]
-	public virtual void UpdateLink(Vector2 mousePos, bool bCheckForEnd = true)
+	[PunRPC] public virtual void UpdateLink(Vector2 mousePos, bool bCheckForEnd = true)
 	{
 		if (!currentLink) return;
 
@@ -205,8 +233,7 @@ public class LinkingObj : Interactable
 
 
 	// Ending the link (return true if the Link has been successfull)
-	[PunRPC]
-	public bool EndLink(Vector2 mousePos, bool bShouldCancel = true)
+	[PunRPC] public bool EndLink(Vector2 mousePos, bool bShouldCancel = true)
 	{
 		bool bLinkSucess = true;
 
@@ -214,7 +241,6 @@ public class LinkingObj : Interactable
 		int indexLP = linkingPointsColls.IndexOf(coll);
 		if (indexLP == -1 || !CanEndLinkOn(indexLP) || !CanLinkFromTo(linkStart,linkingPoints[indexLP]))
 		{
-			Debug.Log("Index aimed point " + indexLP);
 			if (bShouldCancel)
 				CancelLink();
 			else
@@ -257,7 +283,7 @@ public class LinkingObj : Interactable
 	// Get linking possibilities
 	protected virtual bool CanStartLinkOn(int indexPoint)
 	{
-		return true;
+		return !bIsVoting;
 	}
 	protected virtual bool CanEndLinkOn(int indexPoint)
 	{
@@ -282,6 +308,109 @@ public class LinkingObj : Interactable
 		return true;
 	}
 
+	[PunRPC] public void SuccessLinking()
+	{
+		print("Success");
+		GetComponent<SuccessAction>().SuccessAct();
+	}
+	[PunRPC] public void FailLinking()
+{
+		print("Fail");
+		openWindowObj.pv.RPC("ChangeCanClose", RpcTarget.All, true);
+	}
+
+
+	#endregion
+
+
+
+
+
+	///==========================================================================================================
+	///		VOTING
+	///==========================================================================================================
+
+	#region Voting variables
+
+	private bool bIsVoting = false;
+
+	public GameObject validationBtns;
+	public WaitingPlayers waitingRoom;
+
+	public OpenWindowObj openWindowObj;
+
+	#endregion
+
+	#region Voting functions
+
+	[PunRPC] public void CancelLinking()
+	{
+		if (!PhotonNetwork.IsMasterClient)
+		{
+			pv.RPC("CancelLinking", RpcTarget.MasterClient);
+			return;
+		}
+
+		foreach (var lp in linkingPoints)
+		{
+			lp.RemoveLink();
+		}
+
+		print("Cancel linking");
+		
+		pv.RPC("ShowValidationBtns", RpcTarget.All, false);
+		openWindowObj.pv.RPC("ChangeCanClose", RpcTarget.All, true);
+		if (bIsVoting)
+		{
+			
+		}
+		else
+			waitingRoom.pv.RPC("CancelWaitingRoom", RpcTarget.All);
+	}
+	public void ValidateLinking()
+	{
+
+		if (!bIsVoting)
+		{
+			pv.RPC("ChangeIsVotingState", RpcTarget.All, true);
+			waitingRoom.StartWaitingRoom();
+		}
+
+		waitingRoom.EnterWaitingRoom(true);
+		ShowValidationBtns(false);
+	}
+
+	[PunRPC] public void ShowValidationBtns(bool bShow)
+	{
+		print("Set buttons active: " + bShow);
+		validationBtns.SetActive(bShow);
+	}
+
+	#endregion
+
+	#region Waiting callbacks
+
+	public void StartVote()
+	{
+		print("The vote has started");
+		ShowValidationBtns(true);
+
+		EnableAllLinks(true);
+		OpenSelf();
+	}
+	public void CancelWaitingRoom()
+	{
+		pv.RPC("ChangeIsVotingState", RpcTarget.All, false);
+
+		//CancelLinking();
+	}
+	public void EndWaitingRoom()
+	{
+		if (IsLinkingCorrect())
+			pv.RPC("SuccessLinking", RpcTarget.All);
+		else
+			pv.RPC("FailLinking", RpcTarget.All);
+	}
 
 	#endregion
 
@@ -292,9 +421,6 @@ public class LinkingObj : Interactable
 	///		MULTIPLAYER
 	///==========================================================================================================
 
-
-
-
 	#region Sync functions
 
 	[PunRPC]
@@ -302,11 +428,55 @@ public class LinkingObj : Interactable
 	{
 		bIsInProgress = newState;
 	}
-
-	
-
-	
+	[PunRPC]
+	public void ChangeIsVotingState(bool newState)
+	{
+		bIsVoting = newState;
+	}
 
 	#endregion
 
+
+
+
+
+	///==========================================================================================================
+	///		OPENING
+	///==========================================================================================================
+
+	#region Open variables
+
+	[HideInInspector]public bool bIsOpen = false;
+
+	public OpenWindowObj opener;
+
+	#endregion
+
+	#region IOpen callbacks functions
+
+	public void OnOpen()
+	{
+		bIsOpen = true;
+		EnableAllLinks(true);
+	}
+	public void OnClose()
+	{
+		bIsOpen = false;
+		EnableAllLinks(false);
+	}
+
+	#endregion
+
+	#region Opener functions
+
+	private void OpenSelf()
+	{
+		opener.OpenWindow();
+	}
+	private void CloseSelf()
+	{
+		opener.CloseWindow();
+	}
+
+	#endregion
 }

@@ -42,4 +42,15 @@ public class LinkingPoint : MonoBehaviour
 		return nextPoint || previousPoint;
 	}
 
+	public void EnableAllLink(bool bEnable)
+	{
+		EnableLink(bEnable);
+		nextPoint.EnableAllLink(bEnable);
+	}
+	public void EnableLink(bool bEnable)
+	{
+		if (linkObj && linkObj.GetComponent<Link>())
+			linkObj.GetComponent<Link>().EnableLink(bEnable);
+	}
+
 }

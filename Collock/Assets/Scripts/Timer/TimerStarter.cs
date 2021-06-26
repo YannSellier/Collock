@@ -8,6 +8,7 @@ public class TimerStarter : MonoBehaviour
     void Start()
     {
 		TimerManager.instance.StartTimer();
+		Destroy(gameObject);
     }
 
 }

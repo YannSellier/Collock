@@ -44,10 +44,7 @@ public class LinkCode : LinkingObj
 	{
 		base.SERVER_EndInteraction(mousePos);
 
-		foreach(var lp in linkingPoints)
-		{
-			lp.RemoveLink();
-		}
+		
 	}
 
 

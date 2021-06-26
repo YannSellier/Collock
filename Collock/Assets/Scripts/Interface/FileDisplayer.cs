@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,21 +8,24 @@ public class FileDisplayer : MonoBehaviour
 {
 
 	///==========================================================================================================
-	///		UNITY BUIL-IN
+	///		GENERAL
 	///==========================================================================================================
 
-	#region Unity Buil-in functions
+	#region Conponents variables
 
-	// Start is called before the first frame update
-	void Start()
+	[HideInInspector] public PhotonView pv;
+
+	#endregion
+
+	#region Unity's functions
+
+	public void Awake()
 	{
-
+		pv = GetComponent<PhotonView>();
 	}
 
-	// Update is called once per frame
-	void Update()
+	public void Update()
 	{
-
 	}
 
 	#endregion
@@ -36,6 +40,9 @@ public class FileDisplayer : MonoBehaviour
 	#region Variables
 
 	public GameObject displayWindow;
+	public GameObject nextBtns;
+
+
 	public Text titleDisplayer;
 	public Image imageDisplayer;
 
@@ -58,13 +65,31 @@ public class FileDisplayer : MonoBehaviour
 		// Set the content
 		if (file != null)
 		{
-			titleDisplayer.text = file.fileTitle;
-			imageDisplayer.sprite = file.fileContentImgs[indexPage];
+			if(titleDisplayer) titleDisplayer.text = file.fileTitle;
+
+
+			Sprite sprite = file.fileContentImgs[indexPage];
+			imageDisplayer.sprite = sprite;
+			if (sprite != null)
+			{
+				float aspectRatio = sprite.rect.width / sprite.rect.height;
+				var fitter = imageDisplayer.GetComponent<UnityEngine.UI.AspectRatioFitter>();
+				fitter.aspectRatio = aspectRatio;
+			}
+
+			imageDisplayer.color = new Color(1, 1, 1, 1);
+
+			nextBtns.SetActive(file.fileContentImgs.Count > 1);
+		}
+		else
+		{
+			imageDisplayer.color = new Color(1, 1, 1, 0);
 		}
 
 		// Then turn on the window
 		displayWindow.SetActive(bShouldDisplay);
 	}
+	[PunRPC]
 	public void CloseDisplay()
 	{
 		DisplayItem(false);
@@ -78,7 +103,7 @@ public class FileDisplayer : MonoBehaviour
 	{
 		ChangePage(indexPage + dir);
 	}
-	private void ChangePage(int newPage)
+	protected virtual void ChangePage(int newPage)
 	{
 		indexPage = KeepPageInBound(newPage);
 		DisplayItem(true);

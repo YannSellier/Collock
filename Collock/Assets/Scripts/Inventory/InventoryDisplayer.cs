@@ -61,13 +61,16 @@ public class InventoryDisplayer : MonoBehaviour
 	public void UpdateDisplay()
 	{
 		KeepSelecInBound(selectedItemIndex);
-		imageHolder.sprite = GetSelectedItemImg();
+		Sprite sprite = GetSelectedItemImg();
+		imageHolder.sprite = sprite;
+		
+
+		float imgAlbedo = imageHolder.sprite == null ? 0 : 1;
+		imageHolder.color = new Color(1f, 1f, 1f, imgAlbedo);
 	}
 
 	private Sprite GetSelectedItemImg()
 	{
-		print(inv);
-		print(inv.GetItemAt(selectedItemIndex));
 		return inv.ItemCount() > 0 ? inv.GetItemAt(selectedItemIndex).itemImage : null;
 	}
 
