@@ -24,9 +24,23 @@ public class Link : MonoBehaviour
 
 	private void Start()
 	{
-		transform.parent = GameObject.Find("CodeLinks").transform;
-		transform.position = new Vector3();
+		
+	}
 
+	[PunRPC]
+	public void Setup(int indexParentPoint, bool bShouldRep = true)
+	{
+		if(bShouldRep)
+		{
+			pv.RPC("Setup", RpcTarget.All, indexParentPoint, false);
+			return;
+		}
+
+		LinkingPoint lp = LinkingObj.instance.linkingPoints[indexParentPoint];
+		transform.parent = lp.transform;
+		lp.linkObj = gameObject;
+		transform.position = new Vector3();
+		print("Link parent set");
 
 		EnableLink(LinkingObj.instance.bIsOpen);
 	}

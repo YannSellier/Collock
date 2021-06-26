@@ -44,12 +44,20 @@ public class OpenWindowObj : Interactable
 	public override void EndInteraction(Vector2 mousePos)
 	{
 		(Collider2D coll, Interactable interactable) = StaticLib.SearchForInteractable(mousePos);
-		if (interactable != this) return;
+		if (interactable != this || !GameManager.instance.localPlayer.CanOpenWindow(!bOpen)) return;
 
-		if (!bOpen)			
+
+
+		if (!bOpen)
+		{
+			GameManager.instance.localPlayer.OpenWindow(true);
 			OpenWindow();
-		else
+		}
+		else if(bCanClose)
+		{
+			GameManager.instance.localPlayer.OpenWindow(false);
 			CloseWindow();
+		}
 	}
 
 	#endregion
@@ -88,6 +96,7 @@ public class OpenWindowObj : Interactable
 			return;
 		}
 
+
 		bOpen = true;
 
 		windowToOpen.SetActive(true);
@@ -109,6 +118,9 @@ public class OpenWindowObj : Interactable
 			pv.RPC("CloseWindow", RpcTarget.All);
 			return;
 		}
+
+
+		
 
 		bOpen = false;
 

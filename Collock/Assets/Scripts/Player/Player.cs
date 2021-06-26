@@ -78,8 +78,8 @@ public class Player : MonoBehaviour
 		(Collider2D coll, Interactable interactable) = StaticLib.SearchForInteractable();
 		if (!coll || interactable == null) return;
 
-		interactable.pv.RPC("StartInteraction",RpcTarget.MasterClient, StaticLib.GetMouseWorldPos2D());
-		AddInteractionInProgress(interactable);
+		if(interactable.StartInteraction(StaticLib.GetMouseWorldPos2D()))
+			AddInteractionInProgress(interactable);
 	}
 
 
@@ -157,12 +157,17 @@ public class Player : MonoBehaviour
 	{
 		if (!CanDisplayFile()) return;
 
+		OpenFile(true);
 		fileDisplayer.Setup(file);
 		fileDisplayer.DisplayItem(true);
 	}
+	public void ForceClosefile()
+	{
+		fileDisplayer.CloseDisplay(true);
+	}
 	public bool CanDisplayFile()
 	{
-		return true;
+		return CanOpenFile(true);
 	}
 
 	#endregion
@@ -184,11 +189,70 @@ public class Player : MonoBehaviour
 
 
 	///==========================================================================================================
-	///		TIMER
+	///		WINDOWS MANAGEMENT
 	///==========================================================================================================
 
-	#region Timer variables
+	#region windows management variables
 
+	public bool bIsFileOpen = false;
+	[PunRPC] public void SetIsFileOpen(bool newState, bool bRep = true)
+	{
+		if(bRep)
+		{
+			pv.RPC("SetIsFileOpen", RpcTarget.All, newState, false);
+			return;
+		}
+
+		bIsFileOpen = newState;
+	}
+
+
+
+	public bool bIsWindowOpen = false;
+	[PunRPC] public void SetIsWindowOpen(bool newState, bool bRep = true)
+	{
+		if (bRep)
+		{
+			pv.RPC("SetIsWindowOpen", RpcTarget.All, newState, false);
+			return;
+		}
+
+		bIsWindowOpen = newState;
+	}
+
+	#endregion
+
+
+	#region Windows management functions
+
+	public void OpenFile(bool bOpen)
+	{
+		SetIsFileOpen(bOpen,false);
+	}
+	public bool CanOpenFile(bool bOpen)
+	{
+		print("Try opening File " + bOpen + " with f:" + bIsFileOpen + " and w: " + bIsWindowOpen + " => " + !(bOpen == bIsFileOpen || bIsWindowOpen));
+		if (bOpen == bIsFileOpen || bIsWindowOpen) return false;
+
+		
+
+		return true;
+	}
+	public void OpenWindow(bool bOpen)
+	{
+		if (bIsFileOpen) ForceClosefile();
+
+		SetIsWindowOpen(bOpen,false);
+	}
+	public bool CanOpenWindow(bool bOpen)
+	{
+		print("Try opening window " + bOpen + " with f:" + bIsFileOpen + " and w: " + bIsWindowOpen + " => " + !(bOpen == bIsWindowOpen || bIsFileOpen));
+		if (bOpen == bIsWindowOpen || bIsFileOpen) return false;
+
+		
+
+		return true;
+	}
 
 	#endregion
 

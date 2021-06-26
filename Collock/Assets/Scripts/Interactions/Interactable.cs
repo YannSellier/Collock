@@ -18,9 +18,9 @@ public class Interactable:MonoBehaviour
 	}
 
 	[PunRPC]
-	public virtual void StartInteraction(Vector2 mousePos) // return true if the interaction has begun
+	public virtual bool StartInteraction(Vector2 mousePos) // return true if the interaction has begun
 	{
-
+		return true;
 	}
 	public virtual void UpdateInteraction()
 	{

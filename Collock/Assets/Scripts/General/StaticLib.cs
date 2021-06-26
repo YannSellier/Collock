@@ -34,7 +34,6 @@ public static class StaticLib
 		Collider2D coll = GetAimedCollider2D(mousePos);
 		if (!coll || coll.GetComponentInParent<Interactable>() == null) return (null,null);
 
-		Debug.Log(coll);
 		return (coll, coll.GetComponentInParent<Interactable>());
 	}
 

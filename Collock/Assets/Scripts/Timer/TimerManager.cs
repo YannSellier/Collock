@@ -74,7 +74,7 @@ public class TimerManager : MonoBehaviour
 	[PunRPC]
 	public void ChangeTimer(float change)
 	{
-		currentTime += change;
+		currentTime  = Mathf.Clamp(currentTime + change,0,initialTime);
 		UpdateTimerDisplay();
 	}
 	public void UpdateTimer(float deltaTime)
@@ -83,11 +83,12 @@ public class TimerManager : MonoBehaviour
 
 
 		currentDeltaChange += deltaTime;
-		if(currentDeltaChange >= 1)
+		if(currentDeltaChange >= 1 && currentTime >= 1)
 		{
-			if (currentTime <= 1) pv.RPC("TimerEnd", RpcTarget.AllBuffered);
-
-			pv.RPC("ChangeTimer", RpcTarget.AllBuffered, -1.0f);
+			if (currentTime < 1)
+				pv.RPC("TimerEnd", RpcTarget.AllBuffered);
+			else
+				pv.RPC("ChangeTimer", RpcTarget.AllBuffered, -1.0f);
 			currentDeltaChange -= 1;
 		}
 	}

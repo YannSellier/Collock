@@ -90,8 +90,12 @@ public class FileDisplayer : MonoBehaviour
 		displayWindow.SetActive(bShouldDisplay);
 	}
 	[PunRPC]
-	public void CloseDisplay()
+	public void CloseDisplay(bool bForceClosing = false)
 	{
+
+		if (!GameManager.instance.localPlayer.CanOpenFile(false) || !bForceClosing) return;
+
+		GameManager.instance.localPlayer.OpenFile(false);
 		DisplayItem(false);
 	}
 

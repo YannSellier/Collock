@@ -616,7 +616,7 @@ ScriptsOnlyBuild:
     className: IntInputField
   - hash:
       serializedVersion: 2
-      Hash: ef0361a38ec8319e62519e292f7c4969
+      Hash: 985e2a5ce261d51f25ac766c7512af84
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -790,7 +790,7 @@ ScriptsOnlyBuild:
     className: CurrentRoomIsVisibleProperty
   - hash:
       serializedVersion: 2
-      Hash: 1dc37ed068085426818c55010d16782d
+      Hash: c819a8c6d913b41a7d419260063e44c7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LinkingObj
@@ -1072,7 +1072,7 @@ ScriptsOnlyBuild:
     className: CountOfPlayersProperty
   - hash:
       serializedVersion: 2
-      Hash: 25e104ea1fdd49f10d7c11948e8cfe57
+      Hash: af53ed26d0e2e8092e170a93148aa937
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LinkingPoint
@@ -1570,7 +1570,7 @@ ScriptsOnlyBuild:
     className: ActivationTrack
   - hash:
       serializedVersion: 2
-      Hash: 1dc37ed068085426818c55010d16782d
+      Hash: c819a8c6d913b41a7d419260063e44c7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LinkCode

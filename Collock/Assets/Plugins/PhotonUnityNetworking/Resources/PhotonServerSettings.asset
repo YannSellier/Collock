@@ -69,6 +69,12 @@ MonoBehaviour:
   - SuccessLinking
   - SetFirstPlayer
   - EnableLink
+  - SERVER_StartInteraction
+  - ChangeNbLink
+  - RemoveAllLinks
+  - ChangeCodeImg
+  - SetIsFileOpen
+  - SetIsWindowOpen
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

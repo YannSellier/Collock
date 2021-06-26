@@ -14,13 +14,13 @@ public class LinkCode : LinkingObj
 	#region functions override
 
 
-	public override void UpdateInteraction()
+	/*public override void UpdateInteraction()
 	{
 		pv.RPC("UpdateLink", RpcTarget.MasterClient, StaticLib.GetMouseWorldPos2D(), true);
 
 		//if (currentLink && linkStart)
 			//UpdateLink(StaticLib.GetMouseWorldPos2D(),true);
-	}
+	}*/
 
 	[PunRPC]
 	public override void UpdateLink(Vector2 mousePos, bool bCheckForEnd = true)
@@ -30,15 +30,16 @@ public class LinkCode : LinkingObj
 		if (bCheckForEnd && EndLink(mousePos,false))
 		{
 			int indexPoint = linkingPointsColls.IndexOf(StaticLib.GetAimedCollider2D(mousePos));
-			pv.RPC("StartLinkOn", RpcTarget.MasterClient, indexPoint);
+			//pv.RPC("StartLinkOn", RpcTarget.MasterClient, indexPoint);
+			StartLinkOn(indexPoint);
 		}
 	}
 
 
-	public override void EndInteraction(Vector2 mousePos)
-	{
-		pv.RPC("SERVER_EndInteraction", RpcTarget.MasterClient, mousePos);
-	}
+	//public override void EndInteraction(Vector2 mousePos)
+	//{
+	//	pv.RPC("SERVER_EndInteraction", RpcTarget.MasterClient, mousePos);
+	//}
 	[PunRPC]
 	public override void SERVER_EndInteraction(Vector2 mousePos)
 	{

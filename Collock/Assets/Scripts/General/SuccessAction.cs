@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SuccessAction : MonoBehaviour
 {
@@ -9,7 +10,12 @@ public class SuccessAction : MonoBehaviour
 
 	public void SuccessAct()
 	{
-		if(PhotonNetwork.IsMasterClient)
-			PhotonNetwork.LoadLevel(sceneToLoad);
+		if (PhotonNetwork.IsConnected)
+		{
+			if (PhotonNetwork.IsMasterClient)
+				PhotonNetwork.LoadLevel(sceneToLoad);
+		}
+		else
+			SceneManager.LoadScene(sceneToLoad);
 	}
 }

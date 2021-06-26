@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class LinkingPoint : MonoBehaviour
 {
-	GameObject linkObj = null;
+	public GameObject linkObj = null;
+	[HideInInspector] public PhotonView pv;
 
 
 	LinkingPoint previousPoint = null;
@@ -15,25 +16,32 @@ public class LinkingPoint : MonoBehaviour
 	public LinkingPoint GetNext() { return nextPoint; }
 
 	public int nbOfLink = 0;
-	
 
-	public void LinkTo(LinkingPoint nextPoint, Link linkObj)
+
+	public void Awake()
+	{
+		pv = GetComponent<PhotonView>();
+	}
+
+	public void LinkTo(LinkingPoint nextPoint)
 	{
 		this.nextPoint = nextPoint;
-		this.linkObj = linkObj.gameObject;
 		nextPoint.previousPoint = this;
 
-		nbOfLink++;
-		nextPoint.nbOfLink++;
+		pv.RPC("ChangeNbLink", RpcTarget.All, 1);
+		nextPoint.pv.RPC("ChangeNbLink", RpcTarget.All, 1);
 	}
 	public void RemoveLink()
 	{
-		if (nextPoint == null) return;
-
-		nextPoint.previousPoint = null;
-		nextPoint.RemoveLink();
+		print(nextPoint + " is the next point");
+		if (nextPoint != null)
+		{
+			nextPoint.previousPoint = null;
+			nextPoint.RemoveLink();
+		}
 		nextPoint = null;
-		if(linkObj) PhotonNetwork.Destroy(linkObj);
+		if (linkObj) Destroy(linkObj);
+		else print("link not found so not removed");
 		linkObj = null;
 	}
 
@@ -51,6 +59,12 @@ public class LinkingPoint : MonoBehaviour
 	{
 		if (linkObj && linkObj.GetComponent<Link>())
 			linkObj.GetComponent<Link>().EnableLink(bEnable);
+	}
+
+	[PunRPC]
+	public void ChangeNbLink(int change)
+	{
+		nbOfLink += change;
 	}
 
 }

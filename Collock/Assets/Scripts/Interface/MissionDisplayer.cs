@@ -37,6 +37,7 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 	{
 		TimerManager.instance.StartTimer();
 		waitingSystem.EnterWaitingRoom(false);
+		GameManager.instance.localPlayer.OpenWindow(false);
 		CloseDisplay();
 	}
 	public void StartVote()
