@@ -44,6 +44,8 @@ public class Inventory : MonoBehaviour
 
 	private InventoryDisplayer displayer;
 
+	public int maxItem = 20;
+
 	#endregion
 
 
@@ -61,6 +63,11 @@ public class Inventory : MonoBehaviour
 	#endregion
 
 	#region Item List interactions
+
+	public bool CanAddItem()
+	{
+		return maxItem > items.Count;
+	}
 
 	public int AddItem(Item item, bool updateDisplay = true)
 	{

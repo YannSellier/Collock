@@ -58,6 +58,11 @@ public class InventoryDisplayer : MonoBehaviour
 
 	#region Inv diaply functions
 
+	public Item GetSelectedItem()
+	{
+		return inv.GetItemAt(selectedItemIndex);
+	}
+
 	public void UpdateDisplay()
 	{
 		KeepSelecInBound(selectedItemIndex);

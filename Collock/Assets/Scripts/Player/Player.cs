@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using UnityEngine.EventSystems;
+
 public class Player : MonoBehaviour
 {
 
@@ -49,6 +51,18 @@ public class Player : MonoBehaviour
 
 			if (Input.GetMouseButtonUp(0))
 				EndAllInteraction();
+		}
+
+		if (CanDragDrop())
+		{
+			if (Input.GetMouseButtonDown(0))
+				TryStartDDOp();
+
+			if (Input.GetMouseButton(0))
+				UpdateDragDrop();
+
+			if (Input.GetMouseButtonUp(0))
+				EndDragDrop();
 		}
 	}
 
@@ -256,4 +270,84 @@ public class Player : MonoBehaviour
 
 	#endregion
 
+
+	
+
+
+
+
+	///==========================================================================================================
+	///		DRAG DROP
+	///==========================================================================================================
+
+	#region DragDrop variables
+
+	public bool bDDInterfaceOpen = false;
+	public bool bIsDDActive = false;
+
+	public DragDropOp ddOpObj;
+
+	[SerializeField] GraphicRaycaster m_Raycaster;
+	PointerEventData m_PointerEventData;
+	[SerializeField] EventSystem m_EventSystem;
+
+	#endregion
+
+
+	#region Drag Drop interface functions
+
+	public bool CanDragDrop()
+	{
+		return bDDInterfaceOpen;
+	}
+
+	public void OpenDDInterface(bool bOpen)
+	{
+		bDDInterfaceOpen = bOpen;
+	}
+
+
+	public void TryStartDDOp()
+	{
+		DDTrigger ddt = SearchForDDTrigger();
+		if (ddt == null) return;
+
+		bIsDDActive = true;
+
+		Item item = ddt.invDisplay.GetSelectedItem();
+		ddOpObj.SetupDragDrop(item, ddt.inv);
+	}
+	public void UpdateDragDrop()
+	{
+		if (ddOpObj == null || !bIsDDActive) return;
+
+		ddOpObj.UpdatePosition(Input.mousePosition);
+	}
+	public DDTrigger SearchForDDTrigger()
+	{
+		//Set up the new Pointer Event
+		m_PointerEventData = new PointerEventData(m_EventSystem);
+		//Set the Pointer Event Position to that of the game object
+		m_PointerEventData.position = Input.mousePosition;
+
+		//Create a list of Raycast Results
+		List<RaycastResult> results = new List<RaycastResult>();
+
+		//Raycast using the Graphics Raycaster and mouse click position
+		m_Raycaster.Raycast(m_PointerEventData, results);
+
+		print(results[0].gameObject);
+
+		return results[0].gameObject.GetComponent<DDTrigger>();
+	}
+
+	public void EndDragDrop()
+	{
+		if (!bIsDDActive) return;
+
+
+		ddOpObj.EndOp(SearchForDDTrigger());
+	}
+
+	#endregion
 }
