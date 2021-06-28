@@ -90,6 +90,7 @@ public class InventoryDisplayer : MonoBehaviour
 	}
 	public int KeepSelecInBound(int index)
 	{
+		if (inv.ItemCount() == 0) return 0;
 		return Mathf.Clamp(index, 0, inv.ItemCount()-1);
 	}
 

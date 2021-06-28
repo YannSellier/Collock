@@ -92,11 +92,15 @@ public class FileDisplayer : MonoBehaviour
 	[PunRPC]
 	public void CloseDisplay(bool bForceClosing = false)
 	{
+		print("Close display " + bForceClosing + " and canopenfile: " + GameManager.instance.localPlayer.CanOpenFile(false));
+		if (GameManager.instance.localPlayer.CanOpenFile(false) || bForceClosing)
+		{
 
-		if (!GameManager.instance.localPlayer.CanOpenFile(false) || !bForceClosing) return;
+			print("Close diaplsay succesfull");
 
-		GameManager.instance.localPlayer.OpenFile(false);
-		DisplayItem(false);
+			GameManager.instance.localPlayer.OpenFile(false);
+			DisplayItem(false);
+		}
 	}
 
 	#endregion

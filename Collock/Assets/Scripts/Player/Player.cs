@@ -287,6 +287,9 @@ public class Player : MonoBehaviour
 
 	public DragDropOp ddOpObj;
 
+	[SerializeField]
+	public DragDropWindowManager ddManager;
+
 	[SerializeField] GraphicRaycaster m_Raycaster;
 	PointerEventData m_PointerEventData;
 	[SerializeField] EventSystem m_EventSystem;
@@ -298,7 +301,7 @@ public class Player : MonoBehaviour
 
 	public bool CanDragDrop()
 	{
-		return bDDInterfaceOpen;
+		return bDDInterfaceOpen && (ddManager.bIsAuthor || !ddManager.bIsUsed);
 	}
 
 	public void OpenDDInterface(bool bOpen)
@@ -315,6 +318,7 @@ public class Player : MonoBehaviour
 		bIsDDActive = true;
 
 		Item item = ddt.invDisplay.GetSelectedItem();
+		print("start op with " + item.itemName + "From " + ddt);
 		ddOpObj.SetupDragDrop(item, ddt.inv);
 	}
 	public void UpdateDragDrop()
@@ -345,8 +349,9 @@ public class Player : MonoBehaviour
 	{
 		if (!bIsDDActive) return;
 
-
+		bIsDDActive = false;
 		ddOpObj.EndOp(SearchForDDTrigger());
+		ddManager.OnDrop();
 	}
 
 	#endregion

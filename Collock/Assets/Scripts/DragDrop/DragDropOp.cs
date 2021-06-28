@@ -34,7 +34,6 @@ public class DragDropOp: MonoBehaviour
 
 	public void EndOp(DDTrigger ddSlot)
 	{
-		itemImg.gameObject.SetActive(false);
 
 		if(ddSlot && ddSlot.inv.CanAddItem())
 		{
@@ -44,6 +43,7 @@ public class DragDropOp: MonoBehaviour
 		{
 			invStart.AddItem(item);
 		}
+		itemImg.gameObject.SetActive(false);
 	}
 
 }

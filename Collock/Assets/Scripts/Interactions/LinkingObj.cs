@@ -471,6 +471,8 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 	}
 	public void EndWaitingRoom()
 	{
+		if (!bIsCodeAuthor) return;
+
 		if (IsLinkingCorrect())
 			pv.RPC("SuccessLinking", RpcTarget.All);
 		else

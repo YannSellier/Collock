@@ -37,12 +37,12 @@ public class Inventory : MonoBehaviour
 	#region Inventory variables
 
 	// Items list functions
-	private List<Item> items;
+	public List<Item> items;
 	public int ItemCount() { return items.Count; }
 	public Item GetItemAt(int index) { return index < items.Count && index >= 0 ? items[index] : null; }
 	public int GetItemIndex(Item item) { return items.IndexOf(item); }
 
-	private InventoryDisplayer displayer;
+	private List<InventoryDisplayer> displayers;
 
 	public int maxItem = 20;
 
@@ -57,7 +57,8 @@ public class Inventory : MonoBehaviour
 	}
 	public void InitDisplayer(InventoryDisplayer id)
 	{
-		displayer = id;
+		if (displayers == null) displayers = new List<InventoryDisplayer>();
+		displayers.Add(id);
 	}
 
 	#endregion
@@ -73,8 +74,8 @@ public class Inventory : MonoBehaviour
 	{
 		items.Add(item);
 
-		if (updateDisplay && displayer)
-			displayer.UpdateDisplay();	
+		if (updateDisplay)
+			UpdateAllDisplay();	
 
 		return items.Count - 1;
 	}
@@ -82,10 +83,20 @@ public class Inventory : MonoBehaviour
 	{
 		bool bSuccess = items.Remove(item);
 
-		if (updateDisplay && displayer)
-			displayer.UpdateDisplay();
+		if (updateDisplay)
+			UpdateAllDisplay();
+
 
 		return bSuccess;
+	}
+
+	public void InvTransfer(Inventory newInv)
+	{
+		while(items.Count > 0)
+		{
+			newInv.AddItem(items[0]);
+			RemoveItem(items[0]);
+		}
 	}
 
 	#endregion
@@ -95,6 +106,18 @@ public class Inventory : MonoBehaviour
 	public void UseItem(int indexItem)
 	{
 		items[indexItem].Use();
+	}
+
+	#endregion
+
+	#region Inv display
+
+	public void UpdateAllDisplay()
+	{
+		foreach(var displayer in displayers)
+		{
+			if (displayer) displayer.UpdateDisplay();
+		}
 	}
 
 	#endregion

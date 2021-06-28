@@ -2889,6 +2889,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15b788725be07947a7c90542552fa04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  items: []
+  maxItem: 20
 --- !u!114 &594935036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2906,6 +2908,12 @@ MonoBehaviour:
   pv: {fileID: 0}
   bIsFileOpen: 0
   bIsWindowOpen: 0
+  bDDInterfaceOpen: 0
+  bIsDDActive: 0
+  ddOpObj: {fileID: 0}
+  ddManager: {fileID: 0}
+  m_Raycaster: {fileID: 0}
+  m_EventSystem: {fileID: 0}
 --- !u!1 &600080586
 GameObject:
   m_ObjectHideFlags: 0
@@ -8696,7 +8704,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -37.4}
+  m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1897276758
@@ -8719,7 +8727,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "1 / 4 joueurs \rpr\xEAt"
+  m_text: 1 / 4 joueurs
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a8a8d521ce03e834a95ae8f2d5cd5e61, type: 2}
   m_sharedMaterial: {fileID: -2410232897632603668, guid: a8a8d521ce03e834a95ae8f2d5cd5e61, type: 2}

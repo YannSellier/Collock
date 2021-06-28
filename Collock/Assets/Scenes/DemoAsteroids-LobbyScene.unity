@@ -3558,7 +3558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   displayer: {fileID: 0}
-  initialTime: 30
+  initialTime: 1200
   currentTime: 0
 --- !u!4 &1311446383
 Transform:
