@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mission2.unity
     guid: 60969aa73ecd9a74b954bc376ad1f29a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InteractionsTest.unity
     guid: c5b624ce3dc730149a6f9859b9ae611c
   - enabled: 0

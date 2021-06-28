@@ -25,7 +25,7 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 			if (!waitingSystem.bWaitingRoomOpen)
 			{
 				pv.RPC("SetupWaitingRoom", RpcTarget.All);
-				waitingSystem.StartWaitingRoom();
+				waitingSystem.StartWaitingRoom("");
 			}
 
 			waitingSystem.EnterWaitingRoom(true);

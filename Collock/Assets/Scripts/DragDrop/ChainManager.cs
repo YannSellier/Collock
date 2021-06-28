@@ -8,7 +8,13 @@ public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 	public List<string> correctChain;
 
 	public WaitingPlayers waitingRoom;
-	
+	public ChainItemsBank chainItemBank;
+
+	public void Start()
+	{
+		waitingRoom.Setup(this);
+	}
+
 
 	public override void OnDrop()
 	{
@@ -38,8 +44,16 @@ public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 
 	public void ValidateChain()
 	{
-		waitingRoom.StartWaitingRoom();
+
+		List<Sprite> imgs = new List<Sprite>();
+		foreach (var inv in inventories)
+			imgs.Add(inv.items[0].itemImage);
+		waitingRoom.SetSolution(chainItemBank.ConvertSolution(imgs));
+
+		waitingRoom.StartWaitingRoom(PhotonNetwork.LocalPlayer.NickName);
+		waitingRoom.EnterWaitingRoom(true);
 		OpenValidationWindow(false);
+
 	}
 	
 

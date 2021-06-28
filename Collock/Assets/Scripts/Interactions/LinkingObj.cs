@@ -348,6 +348,7 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 	[PunRPC] public void SuccessLinking()
 	{
 		StartCoroutine("SuccessActionChain");
+		ScoreManager.instance.ChangeScore(100);
 	}
 	public IEnumerator SuccessActionChain()
 	{
@@ -438,7 +439,7 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 		if (!bIsVoting)
 		{
 			pv.RPC("ChangeIsVotingState", RpcTarget.All, true);
-			waitingRoom.StartWaitingRoom();
+			waitingRoom.StartWaitingRoom(PhotonNetwork.LocalPlayer.NickName);
 		}
 
 		waitingRoom.EnterWaitingRoom(true);

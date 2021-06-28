@@ -19,7 +19,7 @@ MonoBehaviour:
     AppVersion: 1.0
     UseNameServer: 0
     FixedRegion: EU
-    Server: 192.168.1.11
+    Server: 192.168.1.12
     Port: 5055
     ProxyServer: 
     Protocol: 0
@@ -77,6 +77,7 @@ MonoBehaviour:
   - SetIsWindowOpen
   - SetIsAuthor
   - SetIsUsed
+  - SetSolution
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

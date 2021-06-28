@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df41222d842c0674f8347d8107446e68, type: 3}
+  m_Name: ChainItemsBank
+  m_EditorClassIdentifier: 
+  imgs:
+  - {fileID: 21300000, guid: 929a5a3c35d4f75468cd39a750ec1d63, type: 3}
+  - {fileID: 21300000, guid: 85cefa771de9aa043a7344ba85368541, type: 3}
+  - {fileID: 21300000, guid: 7f8124497bfeb0e45995d474e3dff7e6, type: 3}
+  - {fileID: 21300000, guid: 7816ef70339169a4f85289e012525b67, type: 3}
+  - {fileID: 21300000, guid: 2b734284b4fdfa44aa62e64a0bb37c57, type: 3}
+  - {fileID: 21300000, guid: 0d20396145df7df46b6cd8f3e0de473a, type: 3}

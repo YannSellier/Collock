@@ -325,7 +325,7 @@ public class Player : MonoBehaviour
 	{
 		if (ddOpObj == null || !bIsDDActive) return;
 
-		ddOpObj.UpdatePosition(Input.mousePosition);
+		ddOpObj.UpdatePosition(StaticLib.GetMouseWorldPos2D());
 	}
 	public DDTrigger SearchForDDTrigger()
 	{

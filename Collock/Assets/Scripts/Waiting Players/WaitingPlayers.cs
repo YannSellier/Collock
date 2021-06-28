@@ -44,6 +44,7 @@ public class WaitingPlayers : MonoBehaviour
 	public bool bWaitingRoomOpen = false;
 	private string firstPlayerName = "";
 
+	public SolutionDisplayer solutionDisplayer;
 
 	public IWaitingCallBacks waitingCallbacks;
 
@@ -68,10 +69,11 @@ public class WaitingPlayers : MonoBehaviour
 		totalPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
 		bWaitingRoomOpen = true;
 	}
-	public void StartWaitingRoom()
+	public void StartWaitingRoom(string player)
 	{
 		print("Start Waiting room");
 
+		pv.RPC("SetFirstPlayer", RpcTarget.All, player);
 		pv.RPC("StartVote", RpcTarget.Others);
 
 		UpdateWaitingRoom();
@@ -87,8 +89,8 @@ public class WaitingPlayers : MonoBehaviour
 
 		if (bEnter)
 		{
-			if (playersWaiting == 0)
-				pv.RPC("SetFirstPlayer", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
+			//if (playersWaiting == 0)
+			//	pv.RPC("SetFirstPlayer", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
 
 			pv.RPC("AddWaitingPlayer", RpcTarget.All);
 		}
@@ -121,10 +123,12 @@ public class WaitingPlayers : MonoBehaviour
 
 	[PunRPC] public void StartVote()
 	{
-		if(voteWindow)
+		if(voteWindow && solutionDisplayer)
 		{
 			voteText.text = firstPlayerName + " vous a proposé la solution suivante :";
 			voteWindow.SetActive(true);
+
+			DisplaySolution();
 		}
 
 		if (waitingCallbacks == null) return;
@@ -179,5 +183,29 @@ public class WaitingPlayers : MonoBehaviour
 
 	#endregion
 
+
+
+
+	///==========================================================================================================
+	///		VOTING
+	///==========================================================================================================
+
+	public int[] solution;
+
+	public void DisplaySolution()
+	{
+		solutionDisplayer.DisplaySolution(solution);
+	}
+	[PunRPC]
+	public void SetSolution(int[] solution, bool bRep = true)
+	{
+		if(bRep)
+		{
+			pv.RPC("SetSolution", RpcTarget.All, solution, false);
+			return;
+		}
+
+		this.solution = solution;
+	}
 
 }

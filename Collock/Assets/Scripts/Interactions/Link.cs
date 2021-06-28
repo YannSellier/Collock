@@ -65,7 +65,7 @@ public class Link : MonoBehaviour
 	[PunRPC]
 	public void UpdatePos(Vector2 startPos, Vector2 endPos)
 	{
-		float z = -14;
+		float z = transform.parent.position.z -0.5f;
 		Vector3 startPos3 = new Vector3(startPos.x, startPos.y, z);
 		Vector3 endPos3 = new Vector3(endPos.x, endPos.y, z);
 		lr.SetPosition(0, startPos3);

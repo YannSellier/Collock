@@ -578,7 +578,7 @@ Canvas:
   m_GameObject: {fileID: 148615662}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 594935031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -902,7 +902,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 7.500001, y: 0}
+  m_AnchoredPosition: {x: 7.5, y: 0}
   m_SizeDelta: {x: 27.90909, y: 24.8436}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &186616260
@@ -1168,7 +1168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -60.1, y: -55.5}
+  m_AnchoredPosition: {x: -60.099976, y: -55.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &189867537
@@ -1553,7 +1553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -47, y: 52.2}
+  m_AnchoredPosition: {x: -47, y: 52.199997}
   m_SizeDelta: {x: 129.83112, y: 146.1902}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &269813748
@@ -2262,10 +2262,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   bWaitingRoomOpen: 0
+  solutionDisplayer: {fileID: 0}
   waitingRoomWindow: {fileID: 2147103404}
   playersText: {fileID: 1897276758}
   voteWindow: {fileID: 0}
   voteText: {fileID: 0}
+  solution: 
 --- !u!114 &409186918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3067,7 +3069,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.78227663, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -68.814, y: 43.379696}
+  m_AnchoredPosition: {x: -68.81399, y: 43.379696}
   m_SizeDelta: {x: 14.776, y: -86.75938}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &648389476
@@ -3199,7 +3201,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.42757726, y: 0.14500001}
   m_AnchorMax: {x: 0.578, y: 0.22236109}
-  m_AnchoredPosition: {x: -0.028549194, y: -32.38}
+  m_AnchoredPosition: {x: -0.028549194, y: -32.380005}
   m_SizeDelta: {x: 210, y: 57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &659337365
@@ -5085,10 +5087,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   bWaitingRoomOpen: 0
+  solutionDisplayer: {fileID: 0}
   waitingRoomWindow: {fileID: 721333054}
   playersText: {fileID: 960019892}
   voteWindow: {fileID: 527702764}
   voteText: {fileID: 1874628097}
+  solution: 
 --- !u!114 &1137710890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5736,7 +5740,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 52.8, y: 65.4}
+  m_AnchoredPosition: {x: 52.799988, y: 65.40001}
   m_SizeDelta: {x: 147.25171, y: 190.846}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1270172626
@@ -6776,7 +6780,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1442278125
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6964,7 +6968,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.78227663, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -68.814, y: -43.25059}
+  m_AnchoredPosition: {x: -68.81399, y: -43.250595}
   m_SizeDelta: {x: 14.776, y: -86.50117}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1449088986
@@ -7714,7 +7718,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -7.499998, y: 0}
+  m_AnchoredPosition: {x: -7.5, y: 0}
   m_SizeDelta: {x: 27.909088, y: 24.8436}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623790735
@@ -8066,10 +8070,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   bWaitingRoomOpen: 0
+  solutionDisplayer: {fileID: 0}
   waitingRoomWindow: {fileID: 2066057585}
   playersText: {fileID: 1293530907}
   voteWindow: {fileID: 0}
   voteText: {fileID: 0}
+  solution: 
 --- !u!114 &1653723258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8126,7 +8132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.9039307, y: -199.70348}
+  m_AnchoredPosition: {x: -2.9039307, y: -199.70346}
   m_SizeDelta: {x: -98.960815, y: -399.4071}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1689313078
@@ -9229,7 +9235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965695177}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.92, y: 0.22514388, z: 9.8}
+  m_LocalPosition: {x: -17.92, y: 0.22514388, z: 108}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1843404062}
@@ -9607,7 +9613,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -51.2, y: 16.4}
+  m_AnchoredPosition: {x: -51.200012, y: 16.4}
   m_SizeDelta: {x: 125.42609, y: 153.05661}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2026896839
