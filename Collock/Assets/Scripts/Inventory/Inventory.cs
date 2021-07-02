@@ -114,6 +114,7 @@ public class Inventory : MonoBehaviour
 
 	public void UpdateAllDisplay()
 	{
+		print("Update all display of " + gameObject);
 		foreach(var displayer in displayers)
 		{
 			if (displayer) displayer.UpdateDisplay();

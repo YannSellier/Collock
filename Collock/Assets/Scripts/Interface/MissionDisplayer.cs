@@ -8,6 +8,7 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 	public WaitingPlayers waitingSystem;
 	[HideInInspector]public PhotonView pv;
 	public bool BWaitForOthers = false;
+	public bool bStartTimers = true;
 
 
 	public void Awake()
@@ -33,6 +34,8 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 		}
 		else
 		{
+
+			if (bStartTimers) GameManager.instance.StartTimers();
 			CloseDisplay();
 		}
 	}
@@ -48,6 +51,7 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 		TimerManager.instance.StartTimer();
 		waitingSystem.EnterWaitingRoom(false);
 		GameManager.instance.localPlayer.OpenWindow(false);
+		if(bStartTimers) GameManager.instance.StartTimers();
 		CloseDisplay();
 	}
 	public void StartVote()
@@ -57,6 +61,10 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 	public void CancelWaitingRoom()
 	{
 		
+	}
+	public void OnEnterWaitingRoom()
+	{
+
 	}
 
 	public void CloseDisplay()

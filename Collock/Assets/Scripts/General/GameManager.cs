@@ -39,7 +39,25 @@ public class GameManager : MonoBehaviour
 
 
 
-	
+
+
+	///==========================================================================================================
+	///		SCENE MANAGEMENT
+	///==========================================================================================================
+
+	#region Scene Management functions
+
+	[PunRPC] public void OnSceneChange()
+	{
+		fadeInObjs.Clear();
+	}
+
+	#endregion
+
+
+
+
+
 	///==========================================================================================================
 	///		PLAYERS
 	///==========================================================================================================
@@ -98,4 +116,44 @@ public class GameManager : MonoBehaviour
 
 	#endregion
 
+
+
+
+
+	///==========================================================================================================
+	///		TIMER
+	///==========================================================================================================
+
+	#region Fadein variables
+
+	public List<FadeIn> fadeInObjs;
+
+	#endregion
+
+	#region Timer functions
+
+	public void StartTimers()
+	{
+		LaunchFadeIn();
+	}
+
+	#endregion
+
+	#region FadeIn functions
+
+	public void DeclareFadeInObj(FadeIn fadein)
+	{
+		if (fadeInObjs == null) fadeInObjs = new List<FadeIn>();
+
+		fadeInObjs.Add(fadein);
+	}
+	public void LaunchFadeIn()
+	{
+		foreach(var fi in fadeInObjs)
+		{
+			fi.StartTimer();
+		}
+	}
+
+	#endregion
 }

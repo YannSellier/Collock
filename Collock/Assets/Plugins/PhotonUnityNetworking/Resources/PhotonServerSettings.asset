@@ -19,7 +19,7 @@ MonoBehaviour:
     AppVersion: 1.0
     UseNameServer: 0
     FixedRegion: EU
-    Server: 192.168.1.12
+    Server: 192.168.1.11
     Port: 5055
     ProxyServer: 
     Protocol: 0
@@ -78,6 +78,23 @@ MonoBehaviour:
   - SetIsAuthor
   - SetIsUsed
   - SetSolution
+  - ChangeChainImg
+  - FailChaining
+  - SuccessChaining
+  - SetNodeState
+  - ChangePlayerNb
+  - LoadSolution
+  - LoadProposition
+  - SaveProposition
+  - ChangeSlotImg
+  - OnSceneChange
+  - LaunchPing
+  - ChangeCode
+  - ChangeIsAuthor
+  - ChangeIsUsed
+  - DisplayMsg
+  - ChangeIsWaiting
+  - ChangeNbPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

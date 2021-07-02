@@ -38,9 +38,9 @@ public class WaitingPlayers : MonoBehaviour
 
 	#region Waiting players variables
 
-	private int playersWaiting = 0;
+	public int playersWaiting = 0;
 	private int totalPlayers = 0;
-	private bool bInWaitingRoom = false;
+	public bool bInWaitingRoom = false;
 	public bool bWaitingRoomOpen = false;
 	private string firstPlayerName = "";
 
@@ -69,16 +69,29 @@ public class WaitingPlayers : MonoBehaviour
 		totalPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
 		bWaitingRoomOpen = true;
 	}
+	[PunRPC] public void ChangeNbPlayer(int nb,bool bRep = true)
+	{
+		if(bRep)
+		{
+			pv.RPC("ChangeNbPlayer", RpcTarget.All, nb, false);
+			return;
+		}
+		print("change nb player: " + nb);
+
+		playersWaiting = nb;
+
+		if(bInWaitingRoom)
+			UpdateWaitingRoom();
+	}
 	public void StartWaitingRoom(string player)
 	{
 		print("Start Waiting room");
-
 		pv.RPC("SetFirstPlayer", RpcTarget.All, player);
 		pv.RPC("StartVote", RpcTarget.Others);
 
 		UpdateWaitingRoom();
 	}
-	public void EnterWaitingRoom(bool bEnter)
+	public void EnterWaitingRoom(bool bEnter, bool bFirst = false)
 	{
 		if (bEnter == bInWaitingRoom) return;
 
@@ -92,21 +105,24 @@ public class WaitingPlayers : MonoBehaviour
 			//if (playersWaiting == 0)
 			//	pv.RPC("SetFirstPlayer", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
 
-			pv.RPC("AddWaitingPlayer", RpcTarget.All);
+			AddWaitingPlayer();
+
+			if (waitingCallbacks != null) waitingCallbacks.OnEnterWaitingRoom();
 		}
 
 	}
 
-	[PunRPC] public void AddWaitingPlayer()
+	public void AddWaitingPlayer()
 	{
-		playersWaiting++;
-		UpdateWaitingRoom();
+		
+		print("add player to " + playersWaiting);
+		ChangeNbPlayer(playersWaiting + 1);
 	}
 	public void UpdateWaitingRoom()
 	{
 		UpdateWaitingRoomDisplay();
 
-		if (playersWaiting == totalPlayers)
+		if (playersWaiting >= totalPlayers)
 			EndWaitingRoom();
 			//pv.RPC("EndWaitingRoom", RpcTarget.All);
 	}
@@ -127,6 +143,7 @@ public class WaitingPlayers : MonoBehaviour
 		{
 			voteText.text = firstPlayerName + " vous a proposé la solution suivante :";
 			voteWindow.SetActive(true);
+			
 
 			DisplaySolution();
 		}
@@ -138,7 +155,8 @@ public class WaitingPlayers : MonoBehaviour
 	}
 	[PunRPC] public void CancelWaitingRoom()
 	{
-		playersWaiting = 0;
+		bWaitingRoomOpen = false;
+		ChangeNbPlayer(0);
 		StartCoroutine("ShowClosingMessage", "Un joueur a refusé la proposition");
 		if (voteWindow)
 			voteWindow.SetActive(false);
@@ -147,12 +165,16 @@ public class WaitingPlayers : MonoBehaviour
 
 		waitingCallbacks.CancelWaitingRoom();
 	}
-	[PunRPC] public void EndWaitingRoom()
+	public void EndWaitingRoom()
 	{
+
 		bWaitingRoomOpen = false;
 		EnterWaitingRoom(false);
+		ChangeNbPlayer(0);
 		if (voteWindow)
 			voteWindow.SetActive(false);
+
+
 
 		if (waitingCallbacks == null) return;
 
@@ -194,8 +216,12 @@ public class WaitingPlayers : MonoBehaviour
 
 	public void DisplaySolution()
 	{
+		if (solutionDisplayer == null) return;
+
+		solutionDisplayer.Init();
 		solutionDisplayer.DisplaySolution(solution);
 	}
+
 	[PunRPC]
 	public void SetSolution(int[] solution, bool bRep = true)
 	{

@@ -121,7 +121,7 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 
 			//pv.RPC("ShowValidationBtns", RpcTarget.All, true);
 			//pv.RPC("ChangeInProgressState", RpcTarget.All, false);
-			openWindowObj.pv.RPC("ChangeCanClose", RpcTarget.All, false);
+			openWindowObj.ChangeCanClose(false);
 		}
 	}
 
@@ -367,7 +367,7 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 	{
 		print("Fail");
 		StartCoroutine("FailActionChain");
-		openWindowObj.pv.RPC("ChangeCanClose", RpcTarget.All, true);
+		openWindowObj.ChangeCanClose(true);
 	}
 	public IEnumerator FailActionChain()
 	{
@@ -429,7 +429,7 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 		print("Cancel linking");
 		pv.RPC("ChangeInProgressState", RpcTarget.All, false);
 		pv.RPC("ShowValidationBtns", RpcTarget.All, false);
-		openWindowObj.pv.RPC("ChangeCanClose", RpcTarget.All, true);
+		openWindowObj.ChangeCanClose(true);
 		
 		waitingRoom.pv.RPC("CancelWaitingRoom", RpcTarget.All);
 	}
@@ -440,9 +440,13 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 		{
 			pv.RPC("ChangeIsVotingState", RpcTarget.All, true);
 			waitingRoom.StartWaitingRoom(PhotonNetwork.LocalPlayer.NickName);
-		}
 
-		waitingRoom.EnterWaitingRoom(true);
+			waitingRoom.EnterWaitingRoom(true,true);
+		}
+		else
+			waitingRoom.EnterWaitingRoom(true);
+
+
 		ShowValidationBtns(false);
 	}
 
@@ -456,6 +460,10 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 
 	#region Waiting callbacks
 
+	public void OnEnterWaitingRoom()
+	{
+
+	}
 	public void StartVote()
 	{
 		print("The vote has started");
@@ -467,8 +475,6 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 	public void CancelWaitingRoom()
 	{
 		pv.RPC("ChangeIsVotingState", RpcTarget.All, false);
-
-		//CancelLinking();
 	}
 	public void EndWaitingRoom()
 	{

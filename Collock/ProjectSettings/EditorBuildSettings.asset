@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/DemoAsteroids-LobbyScene.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: c8a9d1312a49dc8488a9b32d83d659c7
   - enabled: 1
     path: Assets/Scenes/Mission1.unity
@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mission2.unity
     guid: 60969aa73ecd9a74b954bc376ad1f29a
+  - enabled: 1
+    path: Assets/Scenes/Mission3.unity
+    guid: bd3752eb24f3f164b97381851ac07047
+  - enabled: 1
+    path: Assets/Scenes/Mission4.unity
+    guid: 6cac5b2689de64d40a0bb893574bf69c
   - enabled: 0
     path: Assets/Scenes/InteractionsTest.unity
     guid: c5b624ce3dc730149a6f9859b9ae611c

@@ -46,8 +46,7 @@ public class OpenWindowObj : Interactable
 		(Collider2D coll, Interactable interactable) = StaticLib.SearchForInteractable(mousePos);
 		if (interactable != this || !GameManager.instance.localPlayer.CanOpenWindow(!bOpen)) return;
 
-
-
+		
 		if (!bOpen)
 		{
 			GameManager.instance.localPlayer.OpenWindow(true);
@@ -55,6 +54,7 @@ public class OpenWindowObj : Interactable
 		}
 		else if(bCanClose)
 		{
+			print("close window");
 			GameManager.instance.localPlayer.OpenWindow(false);
 			CloseWindow();
 		}
@@ -88,34 +88,49 @@ public class OpenWindowObj : Interactable
 	#region Open File functions
 
 	[PunRPC]
-	public void OpenWindow()
+	public void OpenWindow(bool bRep = true)
 	{
-		if (bOpenOnAll)
+
+		print("open");
+
+		if (bOpenOnAll && bRep)
 		{
-			pv.RPC("OpenWindow", RpcTarget.All);
+			pv.RPC("OpenWindow", RpcTarget.All, false);
 			return;
 		}
 
+		print("sync");
+		
 
 		bOpen = true;
+		
 
 		windowToOpen.SetActive(true);
-		ObjToOpenManager.GetComponent<IOpen>().OnOpen();
+
+		print(" before IOPen callbcks");
+
+
+		if (ObjToOpenManager) ObjToOpenManager.GetComponent<IOpen>().OnOpen();
+
+		print("IOPen callbcks");
+		
 
 		foreach (var coll in openBtnColls) coll.enabled = false;
-		foreach (var coll in closeBtnColls) coll.enabled = true; 
+		foreach (var coll in closeBtnColls) coll.enabled = true;
 
-		objToClose.SetActive(false);
+		print("turn off colls");
+
+		if (objToClose)	objToClose.SetActive(false);
 	}
 
-	public void CloseWindow()
+	public void CloseWindow(bool bRep = false)
 	{
 		if (!bCanClose) return;
 
 
-		if (bCloseOnAll)
+		if (bRep)
 		{
-			pv.RPC("CloseWindow", RpcTarget.All);
+			pv.RPC("CloseWindow", RpcTarget.All, false);
 			return;
 		}
 
@@ -124,17 +139,22 @@ public class OpenWindowObj : Interactable
 
 		bOpen = false;
 
-		ObjToOpenManager.GetComponent<IOpen>().OnClose();
+		if(ObjToOpenManager) ObjToOpenManager.GetComponent<IOpen>().OnClose();
 		windowToOpen.SetActive(false);
-		objToClose.SetActive(true);
+		if(objToClose) objToClose.SetActive(true);
 
 		foreach (var coll in openBtnColls) coll.enabled = true;
 		foreach (var coll in closeBtnColls) coll.enabled = false;
 	}
 
 	[PunRPC]
-	public void ChangeCanClose(bool newState)
+	public void ChangeCanClose(bool newState, bool bRep = true)
 	{
+		if (bRep)
+		{
+			pv.RPC("ChangeCanClose", RpcTarget.All, newState, false);
+			return;
+		}
 		bCanClose = newState;
 	}
 

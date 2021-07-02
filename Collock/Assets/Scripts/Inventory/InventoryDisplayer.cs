@@ -18,7 +18,8 @@ public class InventoryDisplayer : MonoBehaviour
     }
 	private void Start()
 	{
-		UpdateDisplay();
+		if(bUpdateDisplayOnStart)
+			UpdateDisplay();
 	}
 	void Update()
     {
@@ -52,6 +53,7 @@ public class InventoryDisplayer : MonoBehaviour
 	public Image imageHolder;
 
 	private int selectedItemIndex = 0;
+	public bool bUpdateDisplayOnStart = true;
 
 	#endregion
 

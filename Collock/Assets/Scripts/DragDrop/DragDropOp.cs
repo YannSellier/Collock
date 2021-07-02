@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,16 @@ using UnityEngine.UI;
 
 public class DragDropOp: MonoBehaviour 
 {
-
+	PhotonView pv;
 	private Item item;
 	private Inventory invStart;
 
 	public Image itemImg;
 
-
+	public void Awake()
+	{
+		pv = GetComponent<PhotonView>();
+	}
 
 	public void SetupDragDrop(Item item, Inventory invStart)
 	{
@@ -35,7 +39,8 @@ public class DragDropOp: MonoBehaviour
 	public void EndOp(DDTrigger ddSlot)
 	{
 
-		if(ddSlot && ddSlot.inv.CanAddItem())
+		itemImg.gameObject.SetActive(false);
+		if (ddSlot && ddSlot.inv.CanAddItem())
 		{
 			ddSlot.inv.AddItem(item);
 		}
@@ -43,7 +48,6 @@ public class DragDropOp: MonoBehaviour
 		{
 			invStart.AddItem(item);
 		}
-		itemImg.gameObject.SetActive(false);
 	}
 
 }

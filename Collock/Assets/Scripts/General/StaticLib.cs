@@ -37,4 +37,17 @@ public static class StaticLib
 		return (coll, coll.GetComponentInParent<Interactable>());
 	}
 
+
+	public static OnClickDoAction SearchForOnClickObj()
+	{
+		return SearchForOnClickObj(GetMouseWorldPos2D());
+	}
+	public static OnClickDoAction SearchForOnClickObj(Vector2 mousePos)
+	{
+		Collider2D coll = GetAimedCollider2D(mousePos);
+		if (!coll) return null;
+
+		return coll.GetComponent<OnClickDoAction>();
+	}
+
 }

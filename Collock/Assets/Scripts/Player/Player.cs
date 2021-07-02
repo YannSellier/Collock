@@ -64,10 +64,41 @@ public class Player : MonoBehaviour
 			if (Input.GetMouseButtonUp(0))
 				EndDragDrop();
 		}
+
+		if(CanCallOnClick())
+		{
+			if (Input.GetMouseButtonDown(0))
+				TryOnClickCall();
+		}
 	}
 
 
 	#endregion
+
+
+
+
+
+	///==========================================================================================================
+	///		INTERACTIONS
+	///==========================================================================================================
+
+	#region On Click functions
+
+	public bool CanCallOnClick()
+	{
+		return true;
+	}
+	public void TryOnClickCall()
+	{
+		OnClickDoAction obj = StaticLib.SearchForOnClickObj();
+		if (!obj) return;
+
+		obj.OnClick();
+	}
+
+	#endregion
+
 
 
 
@@ -118,9 +149,10 @@ public class Player : MonoBehaviour
 	}
 	public void EndAllInteraction()
 	{
-		foreach(var interactable in interactionsInProgress)
-		{
-			EndInteraction(interactable);
+		while(interactionsInProgress.Count > 0)
+		{ 
+			EndInteraction(interactionsInProgress[0]);
+			interactionsInProgress.RemoveAt(0);
 		}
 	}
 
@@ -340,9 +372,8 @@ public class Player : MonoBehaviour
 		//Raycast using the Graphics Raycaster and mouse click position
 		m_Raycaster.Raycast(m_PointerEventData, results);
 
-		print(results[0].gameObject);
 
-		return results[0].gameObject.GetComponent<DDTrigger>();
+		return results.Count > 0 ? results[0].gameObject.GetComponent<DDTrigger>() : null;
 	}
 
 	public void EndDragDrop()

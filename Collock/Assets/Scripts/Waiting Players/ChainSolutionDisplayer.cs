@@ -23,4 +23,17 @@ public class ChainSolutionDisplayer : SolutionDisplayer
 		slotImgs[indexSlot].sprite = chainItemBank.imgs[indexImg];
 	}
 
+	public override void ShowError(bool[] errors)
+	{
+		for(int i = 0; i < slotImgs.Count; i ++)
+		{
+			ShowNodeError(i, errors[i]);
+		}
+	}
+	public void ShowNodeError(int indexNode, bool bError)
+	{
+		slotImgs[indexNode].transform.GetChild(0).gameObject.SetActive(bError);
+		slotImgs[indexNode].transform.GetChild(1).gameObject.SetActive(!bError);
+	}
+
 }

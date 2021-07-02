@@ -33,7 +33,6 @@ public class LinkingPoint : MonoBehaviour
 	}
 	public void RemoveLink()
 	{
-		print(nextPoint + " is the next point");
 		if (nextPoint != null)
 		{
 			nextPoint.previousPoint = null;
@@ -41,7 +40,6 @@ public class LinkingPoint : MonoBehaviour
 		}
 		nextPoint = null;
 		if (linkObj) Destroy(linkObj);
-		else print("link not found so not removed");
 		linkObj = null;
 	}
 

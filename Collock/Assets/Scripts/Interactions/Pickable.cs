@@ -66,7 +66,7 @@ public abstract class Pickable : Interactable
 	public abstract Item GetItem();
 
 	[PunRPC]
-	public void GetPickedUp()
+	public virtual void GetPickedUp()
 	{
 		GameManager.instance.localPlayer.inv.AddItem(GetItem());
 		Destroy(gameObject);

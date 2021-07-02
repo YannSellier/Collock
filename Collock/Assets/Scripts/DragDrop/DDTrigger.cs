@@ -9,4 +9,5 @@ public class DDTrigger : MonoBehaviour
 
 	public Inventory inv;
 	public InventoryDisplayer invDisplay;
+	public int indexSlot;
 }

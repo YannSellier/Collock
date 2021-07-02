@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DragDropWindowManager: MonoBehaviour, IOpen
 {
@@ -59,6 +60,7 @@ public class DragDropWindowManager: MonoBehaviour, IOpen
 		for(int i = 0; i < inventories.Count; i++)
 		{
 			inventories[i].InvTransfer(GameManager.instance.localPlayer.inv);
+			inventories[i].UpdateAllDisplay();
 		}
 	}
 

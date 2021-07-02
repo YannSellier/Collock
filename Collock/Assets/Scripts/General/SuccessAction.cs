@@ -10,6 +10,8 @@ public class SuccessAction : MonoBehaviour
 
 	public void SuccessAct()
 	{
+		GameManager.instance.pv.RPC("OnSceneChange",RpcTarget.All);
+
 		if (PhotonNetwork.IsConnected)
 		{
 			if (PhotonNetwork.IsMasterClient)
