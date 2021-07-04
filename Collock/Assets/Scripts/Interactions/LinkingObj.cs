@@ -358,7 +358,7 @@ public class LinkingObj : Interactable, IWaitingCallBacks, IOpen
 
 		successWindow.SetActive(true);
 
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(3);
 
 		GetComponent<SuccessAction>().SuccessAct();
 	}

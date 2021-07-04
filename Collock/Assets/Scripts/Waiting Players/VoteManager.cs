@@ -8,6 +8,8 @@ public abstract class VoteManager : MonoBehaviour
 
 	public void Open(bool bOpen)
 	{
+		if (bOpen)
+			GameManager.instance.localPlayer.ForceCloseAll();
 		voteWindow.SetActive(bOpen);
 	}
 

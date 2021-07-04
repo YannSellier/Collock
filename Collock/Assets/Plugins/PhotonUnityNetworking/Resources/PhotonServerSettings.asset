@@ -95,6 +95,20 @@ MonoBehaviour:
   - DisplayMsg
   - ChangeIsWaiting
   - ChangeNbPlayer
+  - FailChoice
+  - SuccessChoice
+  - SelectChoice
+  - ChangeChoice
+  - AddItemToInv
+  - RemoveItemFromInv
+  - RPC_RemoveItem
+  - ChangeSelectedSim
+  - Intervention
+  - RPC_Act
+  - CallAct
+  - OnClick
+  - OpenHint
+  - SetWaitingRoomOpen
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

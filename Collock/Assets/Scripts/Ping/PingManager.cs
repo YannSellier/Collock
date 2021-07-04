@@ -11,6 +11,8 @@ public class PingManager : MonoBehaviour,IOpen
 	private bool bPingLaunched = false;
 
 	public Sprite pingLaunchedImg;
+	public GameObject launchBtn;
+	public GameObject interventionBtn;
 
 	public void Awake()
 	{
@@ -29,15 +31,28 @@ public class PingManager : MonoBehaviour,IOpen
 		}
 
 		bPingLaunched = true;
-		StartCoroutine("PingProcess");
+		pingImg.sprite = pingLaunchedImg;
+		launchBtn.SetActive(false);
+		interventionBtn.SetActive(true);
 	}
 
-	IEnumerator PingProcess()
+	[PunRPC]
+	public void Intervention(bool bRep = true)
+	{
+		if (bRep)
+		{
+			pv.RPC("Intervention", RpcTarget.All, false);
+			return;
+		}
+
+
+		StartCoroutine("InterventionProcess");
+	}
+	IEnumerator InterventionProcess()
 	{
 
-		pingImg.sprite = pingLaunchedImg;
 
-		yield return new WaitForSeconds(4);
+		yield return new WaitForSeconds(0.5f);
 
 		GetComponent<SuccessAction>().SuccessAct();
 	}

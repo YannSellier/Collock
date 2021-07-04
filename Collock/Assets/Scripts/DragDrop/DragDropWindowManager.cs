@@ -11,16 +11,19 @@ public class DragDropWindowManager: MonoBehaviour, IOpen
 	public List<Inventory> inventories;
 	public GameObject validationWindow;
 
+	public List<DDTrigger> ddts;
 
 	public bool bIsUsed = false;
 	public bool bIsAuthor = false;
+
+	public bool bCancelContentOnClose = true;
 
 	public void Awake()
 	{
 		pv = GetComponent<PhotonView>();
 	}
 
-	public void OnOpen()
+	public virtual void OnOpen()
 	{
 		GameManager.instance.localPlayer.OpenDDInterface(true);
 	}
@@ -30,6 +33,8 @@ public class DragDropWindowManager: MonoBehaviour, IOpen
 		GameManager.instance.localPlayer.OpenDDInterface(true);
 
 		CancelDragDropOp();
+
+		OpenValidationWindow(false);
 	}
 
 
@@ -38,10 +43,21 @@ public class DragDropWindowManager: MonoBehaviour, IOpen
 		SetIsAuthor(false);
 		SetIsUsed(false);
 
-		CancelAllContent();
+		if(bCancelContentOnClose) CancelAllContent();
 	}
 
 
+	public virtual void OnDrag(DDTrigger ddt)
+	{
+
+		//if (!ddts.Contains(ddt)) return;
+
+		//OnDragFromThis(ddt);
+	}
+	public virtual void OnDragFromThis(DDTrigger ddt)
+	{
+		CheckForValidationPossibility();
+	}
 	public virtual void OnDrop()
 	{
 		if(!bIsUsed)
@@ -52,7 +68,8 @@ public class DragDropWindowManager: MonoBehaviour, IOpen
 	}
 	public virtual void OpenValidationWindow(bool bOpen)
 	{
-		validationWindow.SetActive(bOpen);
+		if(validationWindow)
+			validationWindow.SetActive(bOpen);
 	}
 
 	public void CancelAllContent()
@@ -65,7 +82,22 @@ public class DragDropWindowManager: MonoBehaviour, IOpen
 	}
 
 
-	
+	public void CheckForValidationPossibility()
+	{
+		if (!bIsAuthor && bIsUsed) return;
+
+		foreach (var inv in inventories)
+		{
+			if (inv.ItemCount() == 0)
+			{
+				OpenValidationWindow(false);
+				return;
+			}
+		}
+		OpenValidationWindow(true);
+	}
+
+
 
 
 	[PunRPC] public void SetIsUsed(bool newState, bool bRep=true)

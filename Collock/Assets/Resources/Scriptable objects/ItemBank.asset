@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a738762c4da502e4492af60ef3a5a3e0, type: 3}
+  m_Name: ItemBank
+  m_EditorClassIdentifier: 
+  ddItems:
+  - itemName: Medaillon 1
+    itemImage: {fileID: 21300000, guid: aba5942f6f1bbda4797caf1d7c5a1850, type: 3}
+  - itemName: Medaillon 2
+    itemImage: {fileID: 21300000, guid: e09967ee36da837428b0053c5eec97bd, type: 3}
+  - itemName: Medaillon 3
+    itemImage: {fileID: 21300000, guid: 247704f05ed37ec4dbfeb1003a0ad37c, type: 3}
+  - itemName: Medaillon 4
+    itemImage: {fileID: 21300000, guid: 43faa8bd777330741ba49e5d19526dd5, type: 3}
+  - itemName: Medaillon 5
+    itemImage: {fileID: 21300000, guid: f189cfdc9861c39469ef16ebb031001a, type: 3}
+  - itemName: Medaillon 6
+    itemImage: {fileID: 21300000, guid: c31a7441c6af3ce4ca404587936dd8d8, type: 3}
+  - itemName: Sim_1
+    itemImage: {fileID: 21300000, guid: 3b9d281d932f24e45ad8b445118eee25, type: 3}
+  - itemName: Sim_2
+    itemImage: {fileID: 21300000, guid: b2dfaf6fa32968c488d2a3941e8e23d5, type: 3}
+  - itemName: Sim_3
+    itemImage: {fileID: 21300000, guid: a04a05cb985b8cc44896c2310ba76cb9, type: 3}
+  - itemName: Sim_4
+    itemImage: {fileID: 21300000, guid: 2c748b765e6709b4e9e93ce910081bd5, type: 3}

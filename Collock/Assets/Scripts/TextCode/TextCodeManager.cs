@@ -173,7 +173,7 @@ public class TextCodeManager : MonoBehaviour, IOpen, IWaitingCallBacks
 
 	#endregion
 
-	#region Variables chang sync functions
+	#region Variables change sync functions
 
 	[PunRPC]
 	public void ChangeCode(string code, bool bRep = true)

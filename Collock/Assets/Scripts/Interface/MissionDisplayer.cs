@@ -14,6 +14,7 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 	public void Awake()
 	{
 		pv = GetComponent<PhotonView>();
+		waitingSystem.Setup(this);
 	}
 
 	public void StartMission()
@@ -23,11 +24,11 @@ public class MissionDisplayer : MonoBehaviour, IWaitingCallBacks
 		if (BWaitForOthers)
 		{
 
-			if (!waitingSystem.bWaitingRoomOpen)
-			{
-				pv.RPC("SetupWaitingRoom", RpcTarget.All);
-				waitingSystem.StartWaitingRoom("");
-			}
+			//if (!waitingSystem.bWaitingRoomOpen)
+			//{
+				//pv.RPC("SetupWaitingRoom", RpcTarget.All);
+				waitingSystem.StartWaitingRoom(PhotonNetwork.LocalPlayer.NickName);
+			//}
 
 			waitingSystem.EnterWaitingRoom(true);
 

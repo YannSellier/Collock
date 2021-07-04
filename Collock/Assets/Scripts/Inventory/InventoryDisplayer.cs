@@ -52,7 +52,7 @@ public class InventoryDisplayer : MonoBehaviour
 
 	public Image imageHolder;
 
-	private int selectedItemIndex = 0;
+	public int selectedItemIndex = 0;
 	public bool bUpdateDisplayOnStart = true;
 
 	#endregion
@@ -78,7 +78,7 @@ public class InventoryDisplayer : MonoBehaviour
 
 	private Sprite GetSelectedItemImg()
 	{
-		return inv.ItemCount() > 0 ? inv.GetItemAt(selectedItemIndex).itemImage : null;
+		return inv.ItemCount() > selectedItemIndex ? inv.GetItemAt(selectedItemIndex).itemImage : null;
 	}
 
 	#endregion
@@ -94,6 +94,10 @@ public class InventoryDisplayer : MonoBehaviour
 	{
 		if (inv.ItemCount() == 0) return 0;
 		return Mathf.Clamp(index, 0, inv.ItemCount()-1);
+	}
+	public void ResetSelection()
+	{
+		selectedItemIndex = 0;
 	}
 
 	#endregion

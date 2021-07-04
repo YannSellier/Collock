@@ -5,11 +5,12 @@ using UnityEngine;
 public class DoPickup : DoAction
 {
 	public Pickable objToPickup;
+	
 
 	public override void Act()
 	{
 		base.Act();
 
-		objToPickup.GetPickedUp();
+		objToPickup.GetPickedUp(false);
 	}
 }

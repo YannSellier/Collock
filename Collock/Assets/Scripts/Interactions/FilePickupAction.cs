@@ -8,9 +8,9 @@ public class FilePickupAction : FilePickup
 	public DoAction actionObj;
 
 	[PunRPC]
-	public override void GetPickedUp()
+	public override void GetPickedUp(bool bRep = true)
 	{
 		actionObj.Act();
-		base.GetPickedUp();
+		base.GetPickedUp(bRep);
 	}
 }

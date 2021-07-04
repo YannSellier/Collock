@@ -45,7 +45,7 @@ public abstract class Pickable : Interactable
 		(Collider2D coll, Interactable interactable) = StaticLib.SearchForInteractable(mousePos);
 		if (interactable != this) return;
 
-		pv.RPC("GetPickedUp", RpcTarget.All);
+		GetPickedUp(true);
 	}
 
 	#endregion
@@ -66,8 +66,14 @@ public abstract class Pickable : Interactable
 	public abstract Item GetItem();
 
 	[PunRPC]
-	public virtual void GetPickedUp()
+	public virtual void GetPickedUp(bool bRep = true)
 	{
+		if(bRep)
+		{
+			pv.RPC("GetPickedUp", RpcTarget.All, false);
+			return;
+		}
+
 		GameManager.instance.localPlayer.inv.AddItem(GetItem());
 		Destroy(gameObject);
 	}

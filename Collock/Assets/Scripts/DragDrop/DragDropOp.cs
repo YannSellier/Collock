@@ -17,19 +17,49 @@ public class DragDropOp: MonoBehaviour
 		pv = GetComponent<PhotonView>();
 	}
 
-	public void SetupDragDrop(Item item, Inventory invStart)
+	public void SetupDragDrop(Item item, int invIndex)
 	{
-		this.invStart = invStart;
+		
+
+		invStart = GameManager.instance.localPlayer.invs[invIndex];
 		this.item = item;
 
-		invStart.RemoveItem(item);
+		RemoveItemFromInv(item.itemName, invIndex);
 
 		itemImg.sprite = item.itemImage;
 		itemImg.gameObject.SetActive(true);
 	}
 
+	[PunRPC]
+	public void RemoveItemFromInv(string itemName, int invIndex, bool bRep = true)
+	{
+		if (bRep)
+		{
+			pv.RPC("RemoveItemFromInv", RpcTarget.All, itemName, invIndex, false);
+			return;
+		}
 
-	
+
+		GameManager.instance.localPlayer.invs[invIndex].RemoveItem(itemName);
+	}
+	[PunRPC]
+	public void AddItemToInv(int indexItem, int invIndex, bool bRep = true)
+	{
+		if (bRep)
+		{
+			pv.RPC("AddItemToInv", RpcTarget.All, indexItem, invIndex, false);
+			return;
+		}
+
+		print("Add item " + indexItem + " to inv " + invIndex);
+
+		Player p = GameManager.instance.localPlayer;
+		p.invs[invIndex].AddItem(p.itemBank.ddItems[indexItem]);
+	}
+
+
+
+
 	public void UpdatePosition(Vector2 mousePos)
 	{
 		itemImg.transform.position = mousePos;
@@ -38,15 +68,32 @@ public class DragDropOp: MonoBehaviour
 
 	public void EndOp(DDTrigger ddSlot)
 	{
-
+		Player p = GameManager.instance.localPlayer;
+		int indexItem = p.itemBank.GetDDItemIndex(item);
+		print("try to add " + indexItem);
 		itemImg.gameObject.SetActive(false);
-		if (ddSlot && ddSlot.inv.CanAddItem())
+		if (ddSlot && ddSlot.bAuthorizeDrop)
 		{
-			ddSlot.inv.AddItem(item);
+			int indexInv = p.GetIndexInv(ddSlot.inv);
+			if (ddSlot.inv.CanAddItem())
+			{
+				AddItemToInv(indexItem, indexInv);
+			}
+			else
+			{
+				Item targetItem = ddSlot.inv.items[0];
+				int indexTargetItem = p.itemBank.GetDDItemIndex(targetItem);
+				int indexInvStart = p.GetIndexInv(invStart);
+
+				RemoveItemFromInv(targetItem.itemName, indexInv);
+				AddItemToInv(indexTargetItem, indexInvStart);
+				AddItemToInv(indexItem, indexInv);
+			}
 		}
 		else
 		{
-			invStart.AddItem(item);
+			int indexInv = p.GetIndexInv(invStart);
+			AddItemToInv(indexItem, indexInv);
 		}
 	}
 

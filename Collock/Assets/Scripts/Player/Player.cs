@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
 
 	private bool CanInteract()
 	{
-		return true;
+		return !HintManager.instance ||  !HintManager.instance.bHintOpen;
 	}
 
 
@@ -182,9 +182,24 @@ public class Player : MonoBehaviour
 	#region Inventory variables
 
 	public Inventory inv;
+	public List<Inventory> invs;
+
+	public ItemBank itemBank;
 
 	#endregion
 
+	#region inv functions
+
+	public int GetIndexInv(Inventory inv)
+	{
+		return invs.IndexOf(inv);
+	}
+	public Inventory GetInv(int index)
+	{
+		return invs[index];
+	}
+
+	#endregion
 
 
 	///==========================================================================================================
@@ -266,6 +281,9 @@ public class Player : MonoBehaviour
 		bIsWindowOpen = newState;
 	}
 
+
+	public List<OpenWindowObj> windowObjs;
+
 	#endregion
 
 
@@ -299,11 +317,25 @@ public class Player : MonoBehaviour
 
 		return true;
 	}
+	public void ForceCloseWindow()
+	{
+		foreach(var o in windowObjs)
+		{
+			o.CloseWindow();
+		}
+	}
+
+
+	public void ForceCloseAll()
+	{
+		ForceClosefile();
+		ForceCloseWindow();
+	}
 
 	#endregion
 
 
-	
+
 
 
 
@@ -319,6 +351,7 @@ public class Player : MonoBehaviour
 
 	public DragDropOp ddOpObj;
 
+
 	[SerializeField]
 	public DragDropWindowManager ddManager;
 
@@ -333,7 +366,7 @@ public class Player : MonoBehaviour
 
 	public bool CanDragDrop()
 	{
-		return bDDInterfaceOpen && (ddManager.bIsAuthor || !ddManager.bIsUsed);
+		return bDDInterfaceOpen && (ddManager.bIsAuthor || !ddManager.bIsUsed) && (!HintManager.instance || !HintManager.instance.bHintOpen);
 	}
 
 	public void OpenDDInterface(bool bOpen)
@@ -345,14 +378,19 @@ public class Player : MonoBehaviour
 	public void TryStartDDOp()
 	{
 		DDTrigger ddt = SearchForDDTrigger();
-		if (ddt == null) return;
+		if (ddt == null || !ddt.bAuthorizeDrag) return;
+
 
 		bIsDDActive = true;
 
 		Item item = ddt.invDisplay.GetSelectedItem();
+		ddManager.OnDrag(ddt);
+
 		print("start op with " + item.itemName + "From " + ddt);
-		ddOpObj.SetupDragDrop(item, ddt.inv);
+		ddOpObj.SetupDragDrop(item, invs.IndexOf(ddt.inv));
 	}
+	
+
 	public void UpdateDragDrop()
 	{
 		if (ddOpObj == null || !bIsDDActive) return;
@@ -378,7 +416,7 @@ public class Player : MonoBehaviour
 
 	public void EndDragDrop()
 	{
-		if (!bIsDDActive) return;
+		if (!bIsDDActive ) return;
 
 		bIsDDActive = false;
 		ddOpObj.EndOp(SearchForDDTrigger());

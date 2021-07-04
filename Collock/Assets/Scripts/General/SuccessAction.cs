@@ -14,7 +14,6 @@ public class SuccessAction : MonoBehaviour
 
 		if (PhotonNetwork.IsConnected)
 		{
-			if (PhotonNetwork.IsMasterClient)
 				PhotonNetwork.LoadLevel(sceneToLoad);
 		}
 		else

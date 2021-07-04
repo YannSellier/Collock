@@ -30,3 +30,6 @@ MonoBehaviour:
   - fileTitle: Guide lancement
     fileContentImgs:
     - {fileID: 21300000, guid: 135690c6bf0ace1408e4ad6c2c022d5e, type: 3}
+  - fileTitle: Ping m5
+    fileContentImgs:
+    - {fileID: 21300000, guid: 5385bf548565e1c49a5368cea48a7eb6, type: 3}

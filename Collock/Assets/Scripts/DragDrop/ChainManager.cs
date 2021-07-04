@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 {
-	public List<int> correctChain;
+	public List<string> correctChain;
 
 	public WaitingPlayers waitingRoom;
 	public ChainItemsBank chainItemBank;
+
+	public ChainVoteManager voteManager;
 
 
 	public Sprite[] chainImgs = new Sprite[3];
@@ -26,23 +28,23 @@ public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 		waitingRoom.Setup(this);
 	}
 
+	public override void OnOpen()
+	{
+		base.OnOpen();
+		UpdateChainDisplay();
+		CheckForValidationPossibility();
+	}
 
 	public override void OnDrop()
 	{
 		base.OnDrop();
 
-		foreach (var inv in inventories)
-		{
-			if (inv.ItemCount() == 0) return;
-		}
+		CheckForValidationPossibility();
 
-		print("Open validation window");
-		OpenValidationWindow(true);
-		SetSolution();
-		pv.RPC("LoadProposition", RpcTarget.Others, waitingRoom.solution);
+		//SetSolution();
+		//pv.RPC("LoadProposition", RpcTarget.Others, waitingRoom.solution);
 
 	}
-
 	public int[] GetConfig()
 	{
 		int[] config = new int[chainImgs.Length];
@@ -102,7 +104,8 @@ public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 	public void ValidateChain()
 	{
 
-		SetSolution();
+		SetIsAuthor(true,false);
+		SetIsUsed(true);
 
 		waitingRoom.StartWaitingRoom(PhotonNetwork.LocalPlayer.NickName);
 		waitingRoom.EnterWaitingRoom(true,true);
@@ -133,7 +136,15 @@ public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 
 	}
 
+	#region ChainDisplay
 
+	public void UpdateChainDisplay()
+	{
+		foreach (var inv in inventories)
+			inv.UpdateAllDisplay();
+	}
+
+	#endregion
 
 
 	#region Waiting callbacks
@@ -141,41 +152,51 @@ public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 	public void OnEnterWaitingRoom()
 	{
 		print("Enter waiting room with author=" + bIsAuthor);
-		if (!bIsAuthor)
-		{
+		//if (!bIsAuthor)
+		//{
 			openWindowObj.OpenWindow();
-
-			LoadProposition(waitingRoom.solution);
-		}
+		//}
 	}
 	public void StartVote()
 	{
-		
+		List<Sprite> imgs = new List<Sprite>();
+		foreach (var inv in inventories)
+			imgs.Add(inv.items[0].itemImage);
+		print("imgs: " + imgs.Count);
+
+		voteManager.Open(true);
+		voteManager.DisplayChain(imgs);
 	}
 	public void CancelWaitingRoom()
 	{
 		CancelDragDropOp();
 
 		openWindowObj.ChangeCanClose(true);
+
+		CheckForValidationPossibility();
 	}
 	public void EndWaitingRoom()
 	{
-		if (!bIsAuthor)
-		{
-			return;
-		}
+		print("End waiting room before author");
+		//if (!bIsAuthor)
+		//{
+		//	return;
+		//}
+		print("End waiting room after author");
 
 
 
-		if(IsChainCorrect())
+		if (IsChainCorrect())
 		{
 			print("Chain correct");
-			pv.RPC("SuccessChaining", RpcTarget.All);
+			SuccessChaining();
+			//pv.RPC("SuccessChaining", RpcTarget.All);
 		}
 		else
 		{
-			pv.RPC("FailChaining", RpcTarget.All);
 			print("Wrong chain");
+			//pv.RPC("FailChaining", RpcTarget.All);
+			FailChaining();
 		}
 	}
 
@@ -231,7 +252,7 @@ public class ChainManager : DragDropWindowManager, IWaitingCallBacks
 	}
 	public bool IsNodeCorrect(int indexNode)
 	{
-		return correctChain[indexNode] == waitingRoom.solution[indexNode];
+		return correctChain[indexNode] == inventories[indexNode].items[0].itemName;
 	}
 	public void ShowError(bool bShow = true)
 	{

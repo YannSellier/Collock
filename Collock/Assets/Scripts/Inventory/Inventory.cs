@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,17 @@ public class Inventory : MonoBehaviour
 	///		UNITY BUIL-IN
 	///==========================================================================================================
 
+	#region Components
+
+	public PhotonView pv;
+
+	#endregion
+
 	#region Unity Buil-in functions
 
 	void Awake()
 	{
+		pv = GetComponent<PhotonView>();
 		items = new List<Item>();
 	}
 	private void Start()
@@ -72,6 +80,8 @@ public class Inventory : MonoBehaviour
 
 	public int AddItem(Item item, bool updateDisplay = true)
 	{
+		if (!CanAddItem()) return -1;
+
 		items.Add(item);
 
 		if (updateDisplay)
@@ -88,6 +98,19 @@ public class Inventory : MonoBehaviour
 
 
 		return bSuccess;
+	}
+	public void RemoveItem(string itemName, bool updateDisplay = true)
+	{
+		foreach(var item in items)
+		{
+			if(item.itemName == itemName)
+			{
+
+				ResetDisplayerSelection();
+				RemoveItem(item, updateDisplay);
+				return;
+			}
+		}
 	}
 
 	public void InvTransfer(Inventory newInv)
@@ -114,11 +137,35 @@ public class Inventory : MonoBehaviour
 
 	public void UpdateAllDisplay()
 	{
-		print("Update all display of " + gameObject);
+		if (displayers == null) return;
 		foreach(var displayer in displayers)
 		{
-			if (displayer) displayer.UpdateDisplay();
+			if (displayer && displayer.enabled) displayer.UpdateDisplay();
 		}
+	}
+
+	public void ResetDisplayerSelection()
+	{
+		foreach (var displayer in displayers)
+			if(displayer)
+				displayer.ResetSelection();
+	}
+
+	#endregion
+
+
+	#region Sync functions
+
+	[PunRPC]
+	public void RPC_RemoveItem(int indexItem,bool bRep)
+	{
+		if(bRep)
+		{
+			pv.RPC("RPC_RemoveItem", RpcTarget.All, indexItem, false);
+			return;
+		}
+
+		RemoveItem(items[indexItem]);
 	}
 
 	#endregion

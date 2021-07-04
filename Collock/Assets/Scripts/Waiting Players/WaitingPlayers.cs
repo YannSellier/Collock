@@ -59,6 +59,18 @@ public class WaitingPlayers : MonoBehaviour
 
 	#region Waiting functions
 
+
+	[PunRPC] public void SetWaitingRoomOpen(bool bOpen, bool bRep = true)
+	{
+		if(bRep)
+		{
+			pv.RPC("SetWaitingRoomOpen", RpcTarget.All, bOpen, false);
+			return;
+		}
+		bWaitingRoomOpen = bOpen;
+	}
+
+
 	[PunRPC] public void Setup(IWaitingCallBacks waitingCallbacks)
 	{
 		print("Setup waiting room");
@@ -67,7 +79,6 @@ public class WaitingPlayers : MonoBehaviour
 
 		playersWaiting = 0;
 		totalPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
-		bWaitingRoomOpen = true;
 	}
 	[PunRPC] public void ChangeNbPlayer(int nb,bool bRep = true)
 	{
@@ -80,16 +91,20 @@ public class WaitingPlayers : MonoBehaviour
 
 		playersWaiting = nb;
 
-		if(bInWaitingRoom)
+		if(bInWaitingRoom && bWaitingRoomOpen)
 			UpdateWaitingRoom();
 	}
 	public void StartWaitingRoom(string player)
 	{
+
+		SetWaitingRoomOpen(true);
+
 		print("Start Waiting room");
 		pv.RPC("SetFirstPlayer", RpcTarget.All, player);
 		pv.RPC("StartVote", RpcTarget.Others);
 
 		UpdateWaitingRoom();
+
 	}
 	public void EnterWaitingRoom(bool bEnter, bool bFirst = false)
 	{
@@ -108,6 +123,10 @@ public class WaitingPlayers : MonoBehaviour
 			AddWaitingPlayer();
 
 			if (waitingCallbacks != null) waitingCallbacks.OnEnterWaitingRoom();
+		}
+		else
+		{
+			//ChangeNbPlayer(playersWaiting - 1);
 		}
 
 	}
@@ -155,9 +174,15 @@ public class WaitingPlayers : MonoBehaviour
 	}
 	[PunRPC] public void CancelWaitingRoom()
 	{
-		bWaitingRoomOpen = false;
+		if (bWaitingRoomOpen)
+		{
+			StartCoroutine("ShowClosingMessage", "Un joueur a refusé la proposition");
+
+		}
+
+		SetWaitingRoomOpen(false,false);
 		ChangeNbPlayer(0);
-		StartCoroutine("ShowClosingMessage", "Un joueur a refusé la proposition");
+
 		if (voteWindow)
 			voteWindow.SetActive(false);
 
@@ -167,10 +192,12 @@ public class WaitingPlayers : MonoBehaviour
 	}
 	public void EndWaitingRoom()
 	{
+		print("end waiting room");
 
-		bWaitingRoomOpen = false;
+		SetWaitingRoomOpen(false, false);
 		EnterWaitingRoom(false);
 		ChangeNbPlayer(0);
+		DisplayWaitingRoom(false);
 		if (voteWindow)
 			voteWindow.SetActive(false);
 
@@ -196,6 +223,7 @@ public class WaitingPlayers : MonoBehaviour
 
 	public void DisplayWaitingRoom(bool bDisplay)
 	{
+		print("display waiting room  " + bDisplay);
 		waitingRoomWindow.SetActive(bDisplay);
 	}
 	public void UpdateWaitingRoomDisplay()

@@ -63,7 +63,7 @@ public class FileDisplayer : MonoBehaviour
 	public void DisplayItem(bool bShouldDisplay)
 	{
 		// Set the content
-		if (file != null)
+		if (file != null && file.fileContentImgs.Count > 0 && bShouldDisplay)
 		{
 			if(titleDisplayer) titleDisplayer.text = file.fileTitle;
 

@@ -83,6 +83,8 @@ public class OpenWindowObj : Interactable
 	public bool bCanClose = true;
 
 
+	public DoEnableHint hintEnableAction;
+
 	#endregion
 
 	#region Open File functions
@@ -91,7 +93,6 @@ public class OpenWindowObj : Interactable
 	public void OpenWindow(bool bRep = true)
 	{
 
-		print("open");
 
 		if (bOpenOnAll && bRep)
 		{
@@ -99,8 +100,7 @@ public class OpenWindowObj : Interactable
 			return;
 		}
 
-		print("sync");
-		
+		if(hintEnableAction) hintEnableAction.Act();
 
 		bOpen = true;
 		
@@ -123,14 +123,14 @@ public class OpenWindowObj : Interactable
 		if (objToClose)	objToClose.SetActive(false);
 	}
 
-	public void CloseWindow(bool bRep = false)
+	public void CloseWindow(bool bRep = false, bool bForce = false)
 	{
-		if (!bCanClose) return;
+		if (!bCanClose && !bForce) return;
 
 
 		if (bRep)
 		{
-			pv.RPC("CloseWindow", RpcTarget.All, false);
+			pv.RPC("CloseWindow", RpcTarget.All, false, bForce);
 			return;
 		}
 
