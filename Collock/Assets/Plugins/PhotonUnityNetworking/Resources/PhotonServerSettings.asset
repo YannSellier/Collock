@@ -18,7 +18,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 1.0
     UseNameServer: 0
-    FixedRegion: EU
+    FixedRegion: 
     Server: 192.168.1.11
     Port: 5055
     ProxyServer: 
@@ -33,82 +33,73 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - ClickRpc
-  - DestroyRpc
-  - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - ChangeInProgressState
-  - UpdatePos
-  - StartLinkOn
-  - EndLink
-  - TryLink
-  - UpdateLink
-  - StartInteraction
-  - EndInteraction
-  - GetPickedUp
-  - DisplayFile
-  - OpenFile
-  - SERVER_EndInteraction
-  - ChangeTimer
-  - TimerEnd
-  - CancelWaitingRoom
-  - EndWaitingRoom
-  - StartVote
-  - Setup
-  - CloseDisplay
-  - SetupWaitingRoom
-  - AddWaitingPlayer
-  - OpenWindow
-  - ChangeScore
+  - AddItemToInv
   - CancelLinking
-  - ChangeIsVotingState
-  - ShowValidationBtns
+  - CancelWaitingRoom
   - ChangeCanClose
-  - FailLinking
-  - SuccessLinking
-  - SetFirstPlayer
-  - EnableLink
-  - SERVER_StartInteraction
-  - ChangeNbLink
-  - RemoveAllLinks
-  - ChangeCodeImg
-  - SetIsFileOpen
-  - SetIsWindowOpen
-  - SetIsAuthor
-  - SetIsUsed
-  - SetSolution
-  - ChangeChainImg
-  - FailChaining
-  - SuccessChaining
-  - SetNodeState
-  - ChangePlayerNb
-  - LoadSolution
-  - LoadProposition
-  - SaveProposition
-  - ChangeSlotImg
-  - OnSceneChange
-  - LaunchPing
+  - ChangeChoice
   - ChangeCode
+  - ChangeCodeImg
+  - ChangeInProgressState
   - ChangeIsAuthor
   - ChangeIsUsed
-  - DisplayMsg
+  - ChangeIsVotingState
   - ChangeIsWaiting
+  - ChangeNbLink
   - ChangeNbPlayer
-  - FailChoice
-  - SuccessChoice
-  - SelectChoice
-  - ChangeChoice
-  - AddItemToInv
-  - RemoveItemFromInv
-  - RPC_RemoveItem
+  - ChangeScore
   - ChangeSelectedSim
+  - ChangeSlotImg
+  - ChangeTimer
+  - ClickRpc
+  - CloseDisplay
+  - DestroyRpc
+  - DestroySpaceship
+  - DisplayFile
+  - DisplayMsg
+  - EnableLink
+  - EndInteraction
+  - EndLink
+  - FailChaining
+  - FailChoice
+  - FailLinking
+  - Fire
+  - GetPickedUp
   - Intervention
-  - RPC_Act
-  - CallAct
+  - LaunchPing
+  - LoadProposition
   - OnClick
+  - OnSceneChange
+  - OpenFile
   - OpenHint
+  - OpenWindow
+  - RemoveAllLinks
+  - RemoveItemFromInv
+  - RespawnSpaceship
+  - RPC_RemoveItem
+  - SaveProposition
+  - SERVER_EndInteraction
+  - SERVER_StartInteraction
+  - SetFirstPlayer
+  - SetIsAuthor
+  - SetIsFileOpen
+  - SetIsUsed
+  - SetIsWindowOpen
+  - SetNodeState
+  - SetSolution
+  - Setup
+  - SetupWaitingRoom
   - SetWaitingRoomOpen
+  - ShowValidationBtns
+  - StartInteraction
+  - StartLinkOn
+  - StartVote
+  - SuccessChaining
+  - SuccessChoice
+  - SuccessLinking
+  - TimerEnd
+  - UpdateLink
+  - UpdatePos
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

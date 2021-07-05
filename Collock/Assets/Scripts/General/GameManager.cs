@@ -49,7 +49,8 @@ public class GameManager : MonoBehaviour
 
 	[PunRPC] public void OnSceneChange()
 	{
-		fadeInObjs.Clear();
+		print("reset fadein obj");
+		//fadeInObjs.Clear();
 	}
 
 	#endregion
@@ -145,13 +146,16 @@ public class GameManager : MonoBehaviour
 	{
 		if (fadeInObjs == null) fadeInObjs = new List<FadeIn>();
 
+		print("add fade in obj " + fadein);
+
 		fadeInObjs.Add(fadein);
 	}
 	public void LaunchFadeIn()
 	{
 		foreach(var fi in fadeInObjs)
 		{
-			fi.StartTimer();
+			if(fi)
+				fi.StartTimer();
 		}
 	}
 

@@ -399,6 +399,13 @@ public class Player : MonoBehaviour
 	}
 	public DDTrigger SearchForDDTrigger()
 	{
+
+
+
+		return GetAimedObj().GetComponent<DDTrigger>();
+	}
+	public GameObject GetAimedObj()
+	{
 		//Set up the new Pointer Event
 		m_PointerEventData = new PointerEventData(m_EventSystem);
 		//Set the Pointer Event Position to that of the game object
@@ -410,8 +417,7 @@ public class Player : MonoBehaviour
 		//Raycast using the Graphics Raycaster and mouse click position
 		m_Raycaster.Raycast(m_PointerEventData, results);
 
-
-		return results.Count > 0 ? results[0].gameObject.GetComponent<DDTrigger>() : null;
+		return results.Count > 0 ? results[0].gameObject : null;
 	}
 
 	public void EndDragDrop()

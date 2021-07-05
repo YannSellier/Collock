@@ -251,8 +251,8 @@ namespace Photon.Pun.Demo.Asteroids
             {
                 PhotonNetwork.LocalPlayer.NickName = playerName;
                 PhotonNetwork.ConnectUsingSettings();
-            }
-            else
+			}
+			else
             {
                 Debug.LogError("Player Name is invalid.");
             }

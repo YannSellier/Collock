@@ -14,14 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hints:
   - code: 1
-    msg: Hey je m'appelle indice 1
+    msg: "Avez-vous regard\xE9 la carte des constellations ?"
     bActive: 0
     displayTime: 15
   - code: 2
     msg: Hey je m'appelle indice 2
-    bActive: 0
-    displayTime: 20
-  - code: 3
-    msg: Hey je m'appelle indice 3
     bActive: 1
-    displayTime: 25
+    displayTime: 30

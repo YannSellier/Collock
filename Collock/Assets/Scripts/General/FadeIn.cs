@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,10 +18,15 @@ public class FadeIn : MonoBehaviour
 		print("Start timer on " + gameObject);
 		bShouldTime = true;
 	}
-	void Awake()
+	void Start()
 	{
+		if (!PhotonNetwork.IsConnected) return;
+
 		if (!sprite) sprite = GetComponent<SpriteRenderer>();
 		sprite.color = new Color(1, 1, 1, 0);
+
+		while (!GameManager.instance)
+			print("waiting for GM instance");
 		GameManager.instance.DeclareFadeInObj(this);
 	}
 	void Update()
@@ -33,6 +39,7 @@ public class FadeIn : MonoBehaviour
 
 		float t = (time - startTime) / duration;
 		sprite.color = new Color(1f, 1f, 1f, Mathf.SmoothStep(minimum, maximum, t));
+
 	}
 
 
